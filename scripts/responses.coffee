@@ -7,7 +7,7 @@ module.exports = (robot) ->
     msg.send "@andy"
     
   robot.hear /mouse/i, (msg) ->
-    msg.send "@mashamous"
+    msg.send "@mashamouse"
     
-  robot.hear /friday/i, (msg) ->
+  robot.hear /^\s*friday\s*$/i, (msg) ->
     msg.send "DRINK DAY"
