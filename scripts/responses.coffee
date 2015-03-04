@@ -12,6 +12,9 @@ module.exports = (robot) ->
   robot.hear /(^.{0,4}mouse|((?!masha).{5}mouse))/i, (msg) ->
     msg.send "@mashamouse"
     
+  robot.hear /moose/i, (msg) ->
+    msg.send "@mashamouse"
+    
   robot.hear /^\s*friday\s*$/i, (msg) ->
     msg.send "DRINK DAY"
 
