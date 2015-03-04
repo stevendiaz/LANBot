@@ -6,7 +6,7 @@ module.exports = (robot) ->
   robot.hear /\@coachwiggly/i, (msg) ->
     msg.send "@andy"
     
-  robot.hear /\s*mouse\s*/i, (msg) ->
+  robot.hear /(^|\s+)mouse(\s+|$)/i, (msg) ->
     msg.send "@mashamouse"
     
   robot.hear /^\s*friday\s*$/i, (msg) ->
