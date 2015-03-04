@@ -14,3 +14,6 @@ module.exports = (robot) ->
     
   robot.hear /^\s*friday\s*$/i, (msg) ->
     msg.send "DRINK DAY"
+
+  robot.hear /node\.?js/i, (msg) ->
+    msg.send "the only real dev language"
