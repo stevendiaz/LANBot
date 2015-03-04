@@ -7,9 +7,9 @@ module.exports = (robot) ->
     msg.send "@andy"
     
   # matches "mouse" whenever it's not preceded by "@masha"
-  # 1. whenever there are only 0-5 characters before "mouse", not enough for "@masha"
-  # 2. whenever there are 6 characters before "mouse" but those characters aren't "@masha"
-  robot.hear /(^.{0,5}mouse|((?!@masha).{6}mouse))/i, (msg) ->
+  # 1. whenever there are only 0-4 characters before "mouse", not enough for "masha"
+  # 2. whenever there are 5 characters before "mouse" but those characters aren't "masha"
+  robot.hear /(^.{0,4}mouse|((?!masha).{5}mouse))/i, (msg) ->
     msg.send "@mashamouse"
     
   robot.hear /^\s*friday\s*$/i, (msg) ->
