@@ -17,6 +17,9 @@ module.exports = (robot) ->
   # respondes to "friday" with "DRINK DAY" as long as the "friday" is by itself in a message
   robot.hear /^\s*friday\s*$/i, (msg) ->
     msg.send "DRINK DAY"
+  
+  robot.hear /^\s*tuesday\s*$/i, (msg) ->
+    msg.send "CLUB GOIN UP"
 
   robot.hear /node\.?js/i, (msg) ->
     msg.send "the only real dev language"
