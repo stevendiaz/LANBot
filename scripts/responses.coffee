@@ -23,3 +23,6 @@ module.exports = (robot) ->
 
   robot.hear /node\.?js/i, (msg) ->
     msg.send "the only real dev language"
+
+  robot.hear /it's happening/i, (msg) ->
+    msg.send "http://i.imgur.com/7drHiqr.gif"
