@@ -26,3 +26,6 @@ module.exports = (robot) ->
 
   robot.hear /it's happening/i, (msg) ->
     msg.send "http://i.imgur.com/7drHiqr.gif"
+    
+  robot.hear /little *foot/i (msg) ->
+    msg.send "@steven"
