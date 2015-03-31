@@ -17,3 +17,6 @@ module.exports = (robot) ->
 
   robot.hear /node\.?js/i, (msg) ->
     msg.send "the only real dev language"
+
+  robot.hear /m'lan/i, (msg) ->
+    msg.send "@erynzzz"
