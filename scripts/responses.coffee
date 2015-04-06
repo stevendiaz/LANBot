@@ -32,3 +32,6 @@ module.exports = (robot) ->
 
   robot.hear /m'lan/i, (msg) ->
     msg.send "@erynzzz"
+
+  robot.hear /(not|barely|hardly) a fan/i, (msg) ->
+    msg.send "https://imgs.xkcd.com/comics/turbine.png"
