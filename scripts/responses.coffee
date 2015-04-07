@@ -3,6 +3,10 @@ module.exports = (robot) ->
   # get the calendar link
   robot.hear /\~cal/i, (msg) ->
     msg.send "http://goo.gl/lXHqbv"
+    
+  # get the bylaws link
+  robot.hear /\~bylaws/i, (msg) ->
+    msg.send "https://texaslan.slack.com/files/rmlynch/F03RBHP7C/_______by-laws.pdf"
 
   # match Andy's nickname and reply with a tag
   robot.hear /\@coachwiggly/i, (msg) ->
