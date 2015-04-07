@@ -38,3 +38,6 @@ module.exports = (robot) ->
     
   robot.hear /(tobbert|databae)/i, (msg) ->
     msg.send "@rmlynch"
+
+  robot.hear /stevie/i, (msg) ->
+    msg.send "@steven"
