@@ -6,7 +6,7 @@ module.exports = (robot) ->
     
   # get the bylaws link
   robot.hear /\~bylaws/i, (msg) ->
-    msg.send "https://texaslan.slack.com/files/rmlynch/F03RBHP7C/_______by-laws.pdf"
+    msg.send "http://texaslan.org/files/bylaws.pdf"
 
   # match Andy's nickname and reply with a tag
   robot.hear /\@coachwiggly/i, (msg) ->
