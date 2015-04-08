@@ -8,6 +8,9 @@ module.exports = (robot) ->
   robot.hear /\~bylaws/i, (msg) ->
     msg.send "http://texaslan.org/files/bylaws.pdf"
 
+  robot.hear /\~shame/i, (msg) ->
+    msg.send "http://goo.gl/RR5VmC"
+
   # match Andy's nickname and reply with a tag
   robot.hear /\@coachwiggly/i, (msg) ->
     msg.send "@andy"
