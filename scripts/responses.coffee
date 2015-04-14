@@ -6,7 +6,7 @@ module.exports = (robot) ->
     
   # get the bylaws link
   robot.hear /\~bylaws/i, (msg) ->
-    msg.send "http://texaslan.org/files/bylaws.pdf"
+    msg.send "https://github.com/TexasLAN/bylaws"
 
   robot.hear /\~shame/i, (msg) ->
     msg.send "http://goo.gl/RR5VmC"
