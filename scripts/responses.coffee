@@ -51,3 +51,6 @@ module.exports = (robot) ->
 
   robot.hear /real man/i, (msg) ->
     msg.send "I think you mean a Real Hacker, genders yo"
+  
+  robot.hear /(\s+|^)ls(\s+|$)/, (msg) ->
+    msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to 'ls' in slack!"
