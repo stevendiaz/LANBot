@@ -12,7 +12,7 @@ module.exports = (robot) ->
     msg.send "http://goo.gl/RR5VmC"
 
   # match Andy's nickname and reply with a tag
-  robot.hear /\@coachwiggly/i, (msg) ->
+  robot.hear /coachwiggly/i, (msg) ->
     msg.send "@andy"
 
   # matches "mouse" or "moose" whenever it's not preceded by "@masha"
@@ -31,7 +31,7 @@ module.exports = (robot) ->
   robot.hear /node\.?js/i, (msg) ->
     msg.send "the only real dev language"
 
-  robot.hear /it's happening/i, (msg) ->
+  robot.hear /it's *happening/i, (msg) ->
     msg.send "http://i.imgur.com/7drHiqr.gif"
 
   robot.hear /little *foot/i, (msg) ->
@@ -40,7 +40,7 @@ module.exports = (robot) ->
   robot.hear /m'lan/i, (msg) ->
     msg.send "@erynzzz"
 
-  robot.hear /(not|barely|hardly) a fan/i, (msg) ->
+  robot.hear /(not|barely|hardly) *a *(huge|big)? *fan/i, (msg) ->
     msg.send "https://imgs.xkcd.com/comics/turbine.png"
     
   robot.hear /(tobbert|databae)/i, (msg) ->
@@ -49,11 +49,11 @@ module.exports = (robot) ->
   robot.hear /stevie/i, (msg) ->
     msg.send "@steven"
 
-  robot.hear /real man/i, (msg) ->
+  robot.hear /real *man/i, (msg) ->
     msg.send "I think you mean a Real Hacker, genders yo"
   
   robot.hear /(\s+|^)ls(\s+|$)/, (msg) ->
     msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to 'ls' in slack!"
     
-  robot.hear /long live slackbot/, (msg) ->
+  robot.hear /long *live *slackbot/, (msg) ->
     msg.send "I killed slackbot"
