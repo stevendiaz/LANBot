@@ -29,7 +29,10 @@ module.exports = (robot) ->
     msg.send "CLUB GOIN UP"
 
   robot.hear /node\.?js/i, (msg) ->
-    msg.send "the only real dev language"
+    msg.send "node.js is the only real dev language"
+
+  robot.hear /mongo/i, (msg) ->
+    msg.send "mongodb is web scale"
 
   robot.hear /it's *happening/i, (msg) ->
     msg.send "http://i.imgur.com/7drHiqr.gif"
