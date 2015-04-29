@@ -60,3 +60,6 @@ module.exports = (robot) ->
     
   robot.hear /long *live *slackbot/, (msg) ->
     msg.send "I killed slackbot"
+    
+  robot.head /\:crab\:/, (msg) ->
+    msg.send "Ravioli ravioli give me the formuoli"
