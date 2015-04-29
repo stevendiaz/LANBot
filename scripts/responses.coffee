@@ -63,3 +63,6 @@ module.exports = (robot) ->
     
   robot.hear /:crab:/, (msg) ->
     msg.send "Ravioli ravioli give me the formuoli"
+  
+  robot.hear /about a week ago/, (msg) ->
+    msg.send "WEEK AGO"
