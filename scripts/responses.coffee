@@ -51,11 +51,11 @@ module.exports = (robot) ->
   robot.hear /(\s+|^)ls(\s+|$)/, (msg) ->
     msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to `ls` in slack!"
     
-  robot.hear /long *live *slackbot/, (msg) ->
+  robot.hear /long *live *slackbot/i, (msg) ->
     msg.send "I killed slackbot"
     
   robot.hear /:crab:/, (msg) ->
     msg.send "Ravioli ravioli give me the formuoli"
   
-  robot.hear /about a week ago/, (msg) ->
+  robot.hear /about a week ago/i, (msg) ->
     msg.send "WEEK AGO"
