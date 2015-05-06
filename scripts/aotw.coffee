@@ -13,8 +13,8 @@
 #   aotw history [length] - view all historical AOTWs, optionally limited to [length] *
 #   aotw nominate <url> - nominate an album *
 #   aotw nominations [length] - view all current nominations, optionally limited to [length] *
-#   aotw reset - reset all AOTW data *
-#   aotw select <nomination index> - select the AOTW and reset nominations *
+#   aotw reset - reset all AOTW data *~
+#   aotw select <nomination index> - select the AOTW and reset nominations *~
 #
 # Author:
 #   Thomas Gaubert
@@ -33,6 +33,9 @@ class AotwManager
         # Define a channel to which commands denoted by an astrisk are limited.
         # If left blank, commands can be run within any channel.
         @channel = "music"
+        # Restrict commands denoted by a tilde to the following users.
+        # If left empty, any user can issue restricted commands.
+        @admins = ["colt"]
 
         @history = []
         @nominations = []
@@ -55,7 +58,14 @@ class AotwManager
         if @channel == "" || msg.message.user.room == @channel
             return true
         else
-            msg.send "You must be in ##{@channel} to use AOTW commands."
+            msg.send "You must be in ##{@channel} to use AOTW commands"
+            return false
+
+    checkPermission: (msg) ->
+        if @admins.length == 0 || msg.message.user.name in @admins
+            return true
+        else
+            msg.send "You lack permission for this command"
             return false
 
     validUrl: (url) ->
@@ -122,20 +132,23 @@ class AotwManager
         msg.send "aotw history - view all historical AOTWs *"
         msg.send "aotw nominate <url> - nominate an album *"
         msg.send "aotw nominations - view all current nominations *"
-        msg.send "aotw reset - reset all AOTW data *"
-        msg.send "aotw select <nomination index> - select the AOTW and reset nominations *"
+        msg.send "aotw reset - reset all AOTW data *~"
+        msg.send "aotw select <nomination index> - select the AOTW and reset nominations *~"
         if @channel != ""
-            msg.send "Commands denoted by * must be executed within ##{@channel}"
+            msg.send "Commands denoted by * are restricted to ##{@channel}, ~ are limited to AOTW admins"
+        else
+            msg.send "Commands denoted by ~ are limited to AOTW admins"
 
     reset: (msg) ->
-        @history = []
-        @nominations = []
-        @currentAlbum
-        @save
-        msg.send "All AOTW data has been reset"
+        if @validChannel(msg) && @checkPermission(msg)
+            @history = []
+            @nominations = []
+            @currentAlbum
+            @save
+            msg.send "All AOTW data has been reset"
 
     select: (msg) ->
-        if @validChannel msg
+        if @validChannel(msg) && @checkPermission(msg)
             if msg.match[1] != ""
                 if msg.match[2] <= @nominations.length && msg.match[2] > 0
                     i = msg.match[2]
