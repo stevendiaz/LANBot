@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   aotw current - view the current AOTW *
+#   aotw current - view the current AOTW
 #   aotw help - display AOTW help
 #   aotw history [length] - view all historical AOTWs, optionally limited to [length] *
 #   aotw nominate <url> - nominate an album *
@@ -20,9 +20,7 @@
 #   Thomas Gaubert
 
 class Album
-    constructor: (url, user) ->
-        @url = url
-        @user = user
+    constructor: (@url, @user) ->
 
     getUrl: -> @url
 
@@ -33,6 +31,7 @@ class AotwManager
         # Define a channel to which commands denoted by an astrisk are limited.
         # If left blank, commands can be run within any channel.
         @channel = "music"
+
         # Restrict commands denoted by a tilde to the following users.
         # If left empty, any user can issue restricted commands.
         @admins = ["colt"]
@@ -58,7 +57,7 @@ class AotwManager
         if @channel == "" || msg.message.user.room == @channel
             return true
         else
-            msg.send "You must be in ##{@channel} to use AOTW commands"
+            msg.send "You must be in ##{@channel} to use this command"
             return false
 
     checkPermission: (msg) ->
@@ -73,61 +72,57 @@ class AotwManager
         url.match urlPattern
 
     printCurrentAotw: (msg) ->
-        if @validChannel msg
-            if @currentAlbum
-                msg.send "Current AOTW: #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
-            else
-                msg.send "No current album of the week"
+        if @currentAlbum
+            msg.send "Current AOTW: #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
+        else
+            msg.send "No current album of the week"
 
     printHistory: (msg) ->
-        if @validChannel msg
-            if msg.match[1] != ""
-                limit = msg.match[2]
-            else
-                limit = 9999
+        if msg.match[1] != ""
+            limit = msg.match[2]
+        else
+            limit = 9999
 
-            if @history && @history.length > 0
-                msg.send "Total of #{@history.length} previous AOTWs"
-                i = 0
-                while i <= @history.length - 1 && i < limit
-                    aotw = @history[i]
-                    msg.send "#{i + 1} - #{aotw.getUser()} - #{aotw.getUrl()}"
-                    i++
-            else
-                msg.send "No previous AOTWs"
+        if @history && @history.length > 0
+            msg.send "Total of #{@history.length} previous AOTWs"
+            i = 0
+            while i <= @history.length - 1 && i < limit
+                aotw = @history[i]
+                msg.send "#{i + 1} - #{aotw.getUser()} - #{aotw.getUrl()}"
+                i++
+        else
+            msg.send "No previous AOTWs"
 
     nominate: (msg) ->
-        if @validChannel msg
-            if msg.match[1] != ""
-                if @validUrl msg.match[2]
-                    msg.send "Nomination saved"
-                    nomination = new Album(msg.match[2], msg.message.user.name.toLowerCase())
-                    @nominations.push nomination
-                    @save
-                else
-                    msg.send "Invalid nomination: invalid url"
+        if msg.match[1] != ""
+            if @validUrl msg.match[2]
+                msg.send "Nomination saved"
+                nomination = new Album(msg.match[2], msg.message.user.name.toLowerCase())
+                @nominations.push nomination
+                @save
             else
-                msg.send "Invalid nomination: missing url"
+                msg.send "Invalid nomination: invalid url"
+        else
+            msg.send "Invalid nomination: missing url"
 
     printNominations: (msg) ->
-        if @validChannel msg
-            if msg.match[1] != ""
-                limit = msg.match[2]
-            else
-                limit = 9999
+        if msg.match[1] != ""
+            limit = msg.match[2]
+        else
+            limit = 9999
 
-            if @nominations && @nominations.length > 0
-                msg.send "Total of #{@nominations.length} nominations"
-                i = 0
-                while i <= @nominations.length - 1 && i < limit
-                    nomination = @nominations[i]
-                    msg.send "#{i + 1} - #{nomination.getUser()} - #{nomination.getUrl()}"
-                    i++
-            else
-                msg.send "No current nominations"
+        if @nominations && @nominations.length > 0
+            msg.send "Total of #{@nominations.length} nominations"
+            i = 0
+            while i <= @nominations.length - 1 && i < limit
+                nomination = @nominations[i]
+                msg.send "#{i + 1} - #{nomination.getUser()} - #{nomination.getUrl()}"
+                i++
+        else
+            msg.send "No current nominations"
 
     printHelp: (msg) ->
-        msg.send "aotw current - view the current AOTW *"
+        msg.send "aotw current - view the current AOTW"
         msg.send "aotw help - display AOTW help"
         msg.send "aotw history - view all historical AOTWs *"
         msg.send "aotw nominate <url> - nominate an album *"
@@ -140,31 +135,37 @@ class AotwManager
             msg.send "Commands denoted by ~ are limited to AOTW admins"
 
     reset: (msg) ->
-        if @validChannel(msg) && @checkPermission(msg)
-            @history = []
-            @nominations = []
-            @currentAlbum
-            @save
-            msg.send "All AOTW data has been reset"
+        @history = []
+        @nominations = []
+        @currentAlbum
+        @save
+        msg.send "All AOTW data has been reset"
 
     select: (msg) ->
-        if @validChannel(msg) && @checkPermission(msg)
-            if msg.match[1] != ""
-                if msg.match[2] <= @nominations.length && msg.match[2] > 0
-                    i = msg.match[2]
-                    @currentAlbum = @nominations[i - 1]
-                    @nominations = []
-                    @history.push @currentAlbum
-                    @save
-                    msg.send "Selected #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
-                else
-                    msg.send "Invalid selection: invalid nomination index"
+        if msg.match[1] != ""
+            if msg.match[2] <= @nominations.length && msg.match[2] > 0
+                i = msg.match[2]
+                @currentAlbum = @nominations[i - 1]
+                @nominations = []
+                @history.push @currentAlbum
+                @save
+                msg.send "Selected #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
             else
-                msg.send "Invalid selection: missing nomination index"
+                msg.send "Invalid selection: invalid nomination index"
+        else
+            msg.send "Invalid selection: missing nomination index"
 
 module.exports = (robot) ->
 
     aotw = new AotwManager robot
+
+    checkMessage = (msg, cmd) ->
+        if aotw.validChannel msg
+            cmd msg
+
+    checkRestrictedMessage = (msg, cmd) ->
+        if aotw.checkPermission msg
+            checkMessage msg, cmd
 
     robot.hear /^\s*aotw\s*$/i, (msg) ->
         msg.send "Invalid command, say \"aotw help\" for help"
@@ -174,9 +175,9 @@ module.exports = (robot) ->
         switch cmd
             when "current" then aotw.printCurrentAotw msg
             when "help" then aotw.printHelp msg
-            when "history" then aotw.printHistory msg
-            when "nominate" then aotw.nominate msg
-            when "nominations" then aotw.printNominations msg
-            when "reset" then aotw.reset msg
-            when "select" then aotw.select msg
+            when "history" then checkMessage msg, aotw.printHistory
+            when "nominate" then checkMessage msg, aotw.nominate
+            when "nominations" then checkMessage msg, aotw.printNominations
+            when "reset" then checkRestrictedMessage msg, aotw.reset
+            when "select" then checkRestrictedMessage msg, aotw.select
             else msg.send "Invalid command, say \"aotw help\" for help"
