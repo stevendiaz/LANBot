@@ -30,8 +30,8 @@ class Album
 
 class AotwManager
     constructor: (@robot) ->
-        # Define a channel to which commands denoted by an astrisk are limited
-        # If left blank, commands can be run within any channel
+        # Define a channel to which commands denoted by an astrisk are limited.
+        # If left blank, commands can be run within any channel.
         @channel = "music"
 
         @history = []
