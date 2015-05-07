@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   aotw current - view the current AOTW
+#   aotw current - view the current AOTW *
 #   aotw help - display AOTW help
 #   aotw history [length] - view all historical AOTWs, optionally limited to [length] *
 #   aotw nominate <url> - nominate an album *
@@ -28,36 +28,32 @@ class Album
 
 class AotwManager
     constructor: (@robot) ->
-        # Define a channel to which commands denoted by an astrisk are limited.
+        # Define channels to which commands denoted by an astrisk are limited.
         # If left blank, commands can be run within any channel.
-        @channel = "music"
+        @channels = ["bots", "music"]
 
         # Restrict commands denoted by a tilde to the following users.
         # If left empty, any user can issue restricted commands.
-        @admins = ["colt"]
+        @admins = ["colt", "thomas"]
 
         @history = []
         @nominations = []
-        @currentAlbum
 
         @robot.brain.on 'loaded', =>
             if @robot.brain.data.aotwHistory
                 @history = @robot.brain.data.aotwHistory
             if @robot.brain.data.aotwNoms
                 @nominations = @robot.brain.data.aotwNoms
-            if @robot.brain.data.aotwCurrent
-                @currentAlbum = @robot.brain.data.aotwCurrent
 
     save: ->
         @robot.brain.data.aotwHistory = @history
-        @robot.brain.data.aotwNoms = @history
-        @robot.brain.data.aotwCurrent = @current
+        @robot.brain.data.aotwNoms = @nominations
 
     validChannel: (msg) ->
-        if @channel == "" || msg.message.user.room == @channel
+        if @channels.length == 0 || msg.message.user.room in @channels
             return true
         else
-            msg.send "You must be in ##{@channel} to use this command"
+            msg.send "You must be in a valid channel to use this command"
             return false
 
     checkPermission: (msg) ->
@@ -67,13 +63,10 @@ class AotwManager
             msg.send "You lack permission for this command"
             return false
 
-    validUrl: (url) ->
-        urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/ig
-        url.match urlPattern
-
     printCurrentAotw: (msg) ->
-        if @currentAlbum
-            msg.send "Current AOTW: #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
+        if @history && @history.length > 0
+            aotw = @history[@history.length - 1]
+            msg.send "Current AOTW: #{aotw.getUrl()}, nominated by #{aotw.getUser()}"
         else
             msg.send "No current album of the week"
 
@@ -95,11 +88,16 @@ class AotwManager
 
     nominate: (msg) ->
         if msg.match[1] != ""
-            if @validUrl msg.match[2]
-                msg.send "Nomination saved"
-                nomination = new Album(msg.match[2], msg.message.user.name.toLowerCase())
-                @nominations.push nomination
-                @save
+            urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/ig
+            if msg.match[2].match urlPattern
+                try
+                    @nominations.push new Album(msg.match[2], msg.message.user.name.toLowerCase())
+                catch
+                    @nominations = []
+                    @nominations.push new Album(msg.match[2], msg.message.user.name.toLowerCase())
+                finally
+                    @save
+                    msg.send "Nomination saved"
             else
                 msg.send "Invalid nomination: invalid url"
         else
@@ -122,22 +120,21 @@ class AotwManager
             msg.send "No current nominations"
 
     printHelp: (msg) ->
-        msg.send "aotw current - view the current AOTW"
+        msg.send "aotw current - view the current AOTW *"
         msg.send "aotw help - display AOTW help"
-        msg.send "aotw history - view all historical AOTWs *"
+        msg.send "aotw history [length] - view all historical AOTWs, optionally limited to [length] *"
         msg.send "aotw nominate <url> - nominate an album *"
-        msg.send "aotw nominations - view all current nominations *"
+        msg.send "aotw nominations [length] - view all current nominations, optionally limited to [length] *"
         msg.send "aotw reset - reset all AOTW data *~"
         msg.send "aotw select <nomination index> - select the AOTW and reset nominations *~"
-        if @channel != ""
-            msg.send "Commands denoted by * are restricted to ##{@channel}, ~ are limited to AOTW admins"
+        if @channels.length > 0
+            msg.send "Commands denoted by * are restricted to specific channels, ~ are limited to AOTW admins"
         else
             msg.send "Commands denoted by ~ are limited to AOTW admins"
 
     reset: (msg) ->
         @history = []
         @nominations = []
-        @currentAlbum
         @save
         msg.send "All AOTW data has been reset"
 
@@ -145,11 +142,16 @@ class AotwManager
         if msg.match[1] != ""
             if msg.match[2] <= @nominations.length && msg.match[2] > 0
                 i = msg.match[2]
-                @currentAlbum = @nominations[i - 1]
-                @nominations = []
-                @history.push @currentAlbum
-                @save
-                msg.send "Selected #{@currentAlbum.getUrl()}, nominated by #{@currentAlbum.getUser()}"
+                selected = @nominations[i - 1]
+                try
+                    @history.push selected
+                catch
+                    @history = []
+                    @history.push selected
+                finally
+                    @nominations = []
+                    @save
+                    msg.send "Selected #{selected.getUrl()}, nominated by #{selected.getUser()}"
             else
                 msg.send "Invalid selection: invalid nomination index"
         else
@@ -173,7 +175,7 @@ module.exports = (robot) ->
     robot.hear /^\s*aotw(.*) (.*)/i, (msg) ->
         cmd = msg.match[0].split(" ")[1]
         switch cmd
-            when "current" then aotw.printCurrentAotw msg
+            when "current" then checkMessage msg, aotw.printCurrentAotw
             when "help" then aotw.printHelp msg
             when "history" then checkMessage msg, aotw.printHistory
             when "nominate" then checkMessage msg, aotw.nominate
