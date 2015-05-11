@@ -63,7 +63,7 @@ module.exports = (robot) ->
   robot.hear /about a week ago/i, (msg) ->
     msg.send "WEEK AGO"
     
-  robot.hear /lean/i, (msg) ->
+  robot.hear /(^|\s+)lean/i, (msg) ->
     msg.send "did someone say _lean_? :doublecup:"
 
   robot.hear /cop kill(a|er) t/i, (msg) ->
