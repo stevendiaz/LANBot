@@ -19,35 +19,30 @@
 # Author:
 #   Thomas Gaubert
 
-class Album
-    constructor: (@url, @user) ->
-
-    getUrl: -> @url
-
-    getUser: -> @user
-
 class AotwManager
     constructor: (@robot) ->
+        storageLoaded = =>
+            @storage = @robot.brain.data.aotw ||= {
+                nominations: []
+                history: []
+            }
+
+            @robot.logger.debug "AOTW data loaded: " + JSON.stringify(@storage)
+
         # Define channels to which commands denoted by an astrisk are limited.
         # If left blank, commands can be run within any channel.
-        @channels = ["bots", "music"]
+        @channels = ["bots", "music", "Shell"]
 
         # Restrict commands denoted by a tilde to the following users.
         # If left empty, any user can issue restricted commands.
-        @admins = ["colt", "thomas"]
+        @admins = ["colt", "thomas", "Shell"]
 
-        @history = []
-        @nominations = []
-
-        @robot.brain.on 'loaded', =>
-            if @robot.brain.data.aotwHistory
-                @history = @robot.brain.data.aotwHistory
-            if @robot.brain.data.aotwNoms
-                @nominations = @robot.brain.data.aotwNoms
+        @robot.brain.on "loaded", storageLoaded
+        storageLoaded()
 
     save: ->
-        @robot.brain.data.aotwHistory = @history
-        @robot.brain.data.aotwNoms = @nominations
+        @robot.logger.debug "Saving AOTW data: " + JSON.stringify(@storage)
+        @robot.brain.emit 'save'
 
     validChannel: (msg) ->
         if @channels.length == 0 || msg.message.user.room in @channels
@@ -64,9 +59,9 @@ class AotwManager
             return false
 
     printCurrentAotw: (msg) ->
-        if @history && @history.length > 0
-            aotw = @history[@history.length - 1]
-            msg.send "Current AOTW: #{aotw.getUrl()}, nominated by #{aotw.getUser()}"
+        if @storage.history && @storage.history.length > 0
+            aotw = @storage.history[@storage.history.length - 1]
+            msg.send "Current AOTW: #{aotw["url"]}, nominated by #{aotw["user"]}"
         else
             msg.send "No current album of the week"
 
@@ -76,25 +71,31 @@ class AotwManager
         else
             limit = 9999
 
-        if @history && @history.length > 0
-            msg.send "Total of #{@history.length} previous AOTWs"
+        if @storage.history && @storage.history.length > 0
+            msg.send "Total of #{@storage.history.length} previous AOTWs"
             i = 0
-            while i <= @history.length - 1 && i < limit
-                aotw = @history[i]
-                msg.send "#{i + 1} - #{aotw.getUser()} - #{aotw.getUrl()}"
+            while i <= @storage.history.length - 1 && i < limit
+                album = @storage.history[i]
+                msg.send "#{i + 1} - #{album["user"]} - #{album["url"]}"
                 i++
         else
             msg.send "No previous AOTWs"
 
     nominate: (msg) ->
         if msg.match[1] != ""
+            url = msg.match[2]
             urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/ig
-            if msg.match[2].match urlPattern
+            # To be implemented in a future release
+            # spotify = /https?:\/\/(open|play)\.spotify\.com\/(album|track|user\/[^\/]+\/playlist)\/([a-zA-Z0-9]+)/
+            # googlePlay = /https?:\/\/(music|play)\.google\.com\/music\/m\/([a-zA-Z0-9]+)/
+            # youtube = /https?:\/\/(?:www\.)?youtube.com\/watch\?(?=.*v=\w+)(?:\S+)?/
+            if url.match urlPattern
+                user = msg.message.user.name.toLowerCase()
                 try
-                    @nominations.push new Album(msg.match[2], msg.message.user.name.toLowerCase())
+                    @storage.nominations.push(user: user, url: msg.match[2])
                 catch
-                    @nominations = []
-                    @nominations.push new Album(msg.match[2], msg.message.user.name.toLowerCase())
+                    @storage.nominations = []
+                    @storage.nominations.push(user: user, url: msg.match[2])
                 finally
                     @save
                     msg.send "Nomination saved"
@@ -109,12 +110,12 @@ class AotwManager
         else
             limit = 9999
 
-        if @nominations && @nominations.length > 0
-            msg.send "Total of #{@nominations.length} nominations"
+        if @storage.nominations && @storage.nominations.length > 0
+            msg.send "Total of #{@storage.nominations.length} nominations"
             i = 0
-            while i <= @nominations.length - 1 && i < limit
-                nomination = @nominations[i]
-                msg.send "#{i + 1} - #{nomination.getUser()} - #{nomination.getUrl()}"
+            while i < @storage.nominations.length
+                nomination = @storage.nominations[i]
+                msg.send "#{i + 1} - #{nomination["user"]} - #{nomination["url"]}"
                 i++
         else
             msg.send "No current nominations"
@@ -133,25 +134,25 @@ class AotwManager
             msg.send "Commands denoted by ~ are limited to AOTW admins"
 
     reset: (msg) ->
-        @history = []
-        @nominations = []
+        @storage.nominations = []
+        @storage.history = []
         @save
         msg.send "All AOTW data has been reset"
 
     select: (msg) ->
         if msg.match[1] != ""
-            if msg.match[2] <= @nominations.length && msg.match[2] > 0
+            if msg.match[2] <= @storage.nominations.length && msg.match[2] > 0
                 i = msg.match[2]
-                selected = @nominations[i - 1]
+                selected = @storage.nominations[i - 1]
                 try
-                    @history.push selected
+                    @storage.history.push selected
                 catch
-                    @history = []
-                    @history.push selected
+                    @storage.history = []
+                    @storage.history.push selected
                 finally
-                    @nominations = []
+                    @storage.nominations = []
                     @save
-                    msg.send "Selected #{selected.getUrl()}, nominated by #{selected.getUser()}"
+                    msg.send "Selected #{selected["url"]}, nominated by #{selected["user"]}"
             else
                 msg.send "Invalid selection: invalid nomination index"
         else
