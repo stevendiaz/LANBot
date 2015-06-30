@@ -68,3 +68,6 @@ module.exports = (robot) ->
 
   robot.hear /cop kill(a|er) t/i, (msg) ->
     msg.send "@samtallent"
+
+  robot.hear  /lenny/i, (msg) ->
+    msg.send "_o u kno_ ( ͡° ͜ʖ ͡°)"
