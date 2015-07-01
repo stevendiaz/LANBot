@@ -38,7 +38,7 @@ module.exports = (robot) ->
 
   robot.hear /(not|barely|hardly) *a *(huge|big)? *fan/i, (msg) ->
     msg.send "https://imgs.xkcd.com/comics/turbine.png"
-    
+
   robot.hear /(tobbert|databae)/i, (msg) ->
     msg.send "@rmlynch"
 
@@ -50,19 +50,19 @@ module.exports = (robot) ->
 
   robot.hear /real *man/i, (msg) ->
     msg.send "I think you mean a Real Hacker, genders yo"
-  
+
   robot.hear /(\s+|^)ls(\s+|$)/, (msg) ->
     msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to `ls` in slack!"
-    
+
   robot.hear /long *live *slackbot/i, (msg) ->
     msg.send "I killed slackbot"
-    
+
   robot.hear /:crab:/, (msg) ->
     msg.send "Ravioli ravioli give me the formuoli"
-  
+
   robot.hear /about a week ago/i, (msg) ->
     msg.send "WEEK AGO"
-    
+
   robot.hear /(^|\s+)lean/i, (msg) ->
     msg.send "did someone say _lean_? :doublecup:"
 
@@ -71,3 +71,6 @@ module.exports = (robot) ->
 
   robot.hear  /lenny/i, (msg) ->
     msg.send "_o u kno_ ( ͡° ͜ʖ ͡°)"
+
+  robot.leave (msg) ->
+    msg.send ":rip:"
