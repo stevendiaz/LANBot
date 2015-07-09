@@ -88,7 +88,7 @@ class AMAManager
 
         if candidates.indexOf(newCandidate) < 0 #does ntohing if user is already there
             candidates.push(newCandidate)
-            @save()
+            @save
             msg.send "#{newCandidate} has been added as an AMA candidate"
 
     removeCandidate: (msg, candidates, isManual = false) ->
@@ -104,7 +104,7 @@ class AMAManager
         index = candidates.indexOf(oldCandidate)
         if index > -1 #does nothing if user doesn't exist
             candidates.splice(index, 1)
-            @save()
+            @save
             msg.send "#{oldCandidate} has been removed as an AMA candidate"
         else
             msg.send "No such candidate"
