@@ -1,3 +1,18 @@
+# Description:
+#   List of LANBot responses
+#
+# Dependencies:
+#   None
+#
+# Configuration:
+#   None
+#
+# Commands:
+#   None
+# Author:
+#   Lambda Alpha Nu
+
+
 module.exports = (robot) ->
 
   robot.hear /\~cal/i, (msg) ->
