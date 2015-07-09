@@ -21,8 +21,6 @@
 
 class AMAManager
 
-
-
     constructor: (@robot) ->
         storageLoaded = =>
             @storage = @robot.brain.data.ama ||= {
@@ -30,24 +28,16 @@ class AMAManager
             }
             @robot.logger.debug "AMA data loaded: " + JSON.stringify(@storage)
 
-
-        #Channels in which AMAs are allowed to run
-        @channels = ["bots", "ama", "Shell"]
-
-        #if not null, AMAs are currently on
-        @intervalID = null
-
-        #current AMA person
-        @current = null
+        @channels = ["bots", "ama", "Shell"] # channels where AMAs can run
+        @intervalID = null # if not null, AMAs are currently on
+        @current = null # current AMA person
 
         @robot.brain.on "loaded", storageLoaded
         storageLoaded()
-        console.log(@storage.candidates)
 
     save: ->
         @robot.logger.debug "Saving AMA data: " + JSON.stringify(@storage)
         @robot.brain.emit 'save'
-        console.log("saved")
 
     printHelp: (msg) ->
         msg.send "ama start - pick someone for an AMA and repeat every 24 hours"
@@ -57,18 +47,18 @@ class AMAManager
         msg.send "ama remove <name> -manually remove someone from the candidates list"
         msg.send "ama list - lists all AMA candidates"
 
-    startAMA: (msg, users) ->
+    startAMA: (msg, candidates) ->
         if @intervalID
             msg.send "sorry, an AMA is already going. try ama stop"
         else
-            firstSelection = users[Math.floor(Math.random() * users.length)]
+            firstSelection = candidates[Math.floor(Math.random() * candidates.length)]
             msg.send "#{firstSelection} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
             @current = firstSelection
             @intervalID = setInterval( ->
-                selected = users[Math.floor(Math.random() * users.length)]
+                selected = candidates[Math.floor(Math.random() * candidates.length)]
                 msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
                 @current = selected
-              , 3000)# * 60 * 60 * 24)
+              , 1000 * 60 * 60 * 24) #24 hours
 
     stopAMA: (msg) ->
         if @intervalID
@@ -98,7 +88,7 @@ class AMAManager
 
         if candidates.indexOf(newCandidate) < 0 #does ntohing if user is already there
             candidates.push(newCandidate)
-            @save
+            @save()
             msg.send "#{newCandidate} has been added as an AMA candidate"
 
     removeCandidate: (msg, candidates, isManual = false) ->
@@ -114,7 +104,7 @@ class AMAManager
         index = candidates.indexOf(oldCandidate)
         if index > -1 #does nothing if user doesn't exist
             candidates.splice(index, 1)
-            @save
+            @save()
             msg.send "#{oldCandidate} has been removed as an AMA candidate"
         else
             msg.send "No such candidate"
@@ -136,6 +126,8 @@ module.exports = (robot) ->
 
     ama = new AMAManager robot
 
+    # super janky way to pass data to methods bc random things are undefined
+    # for no apparent reason
     checkMessage = (msg, cmd, data = null, data2 = null) ->
         if ama.validChannel msg
             if data
@@ -150,7 +142,6 @@ module.exports = (robot) ->
         msg.send "Invalid command, say \"ama help\" for help"
 
     robot.hear /^\s*ama(.*) (.*)/i, (msg) ->
-        #console.log(msg)
         cmd = msg.match[0].split(" ")[1]
         switch cmd
             when "start" then checkMessage msg, ama.startAMA, ama.storage.candidates
@@ -161,3 +152,9 @@ module.exports = (robot) ->
             when "list" then checkMessage msg, ama.listCandidates, ama.storage.candidates
             when "help" then ama.printHelp msg
             else msg.send "Invalid command, say \"ama help\" for help"
+
+    robot.enter (msg) ->
+        checkMessage msg, ama.addCandidate, ama.storage.candidates
+
+    robot.leave (msg) ->
+        checkMessage msg, ama.removeCandidate, ama.storage.candidates
