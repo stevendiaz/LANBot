@@ -50,13 +50,15 @@ class AMAManager
         @robot.brain.emit 'save'
 
     printHelp: (msg) ->
-        msg.send "ama start - pick someone for an AMA and repeat every 24 hours"
-        msg.send "ama stop - stop picking AMAs every 24 hours"
-        msg.send "ama current - display the current AMA celebrity"
-        msg.send "ama add - add yourself to the AMA list"
-        msg.send "ama remove - remove yourself from the AMA list"
-        msg.send "ama list - lists all AMA candidates"
-        msg.send "ama clear - clears selections (admin only)"
+        msg.send """
+                 ama start - pick someone for an AMA and repeat every 24 hours
+                 ama stop - stop picking AMAs every 24 hours
+                 ama current - display the current AMA celebrity
+                 ama add - add yourself to the AMA list
+                 ama remove - remove yourself from the AMA list
+                 ama list - lists all AMA candidates
+                 ama clear - clears selections (admin only)
+                 """
 
     startAMA: (msg) ->
         if @intervalID
@@ -132,9 +134,10 @@ class AMAManager
             msg.send "There are no candidates to clear."
 
     listCandidates: (msg) ->
-        msg.send "There are #{@storage.candidates.length} candidates for the AMA"
+        str = "There are #{@storage.candidates.length} candidates for the AMA"
         for candidate in @storage.candidates
-            msg.send "#{candidate}"
+            str = str + "\n#{candidate}"
+        msg.send str
 
 
 
