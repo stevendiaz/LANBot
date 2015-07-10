@@ -60,9 +60,6 @@ module.exports = (robot) ->
   robot.hear /(^|\s+)stevie/i, (msg) ->
     msg.send "@steven"
 
-  robot.hear /estevie/i, (msg) ->
-    msg.send "@stevendiaz"
-
   robot.hear /real *man/i, (msg) ->
     msg.send "I think you mean a Real Hacker, genders yo"
 
@@ -79,13 +76,19 @@ module.exports = (robot) ->
     msg.send "WEEK AGO"
 
   robot.hear /(^|\s+)lean/i, (msg) ->
-    msg.send "did someone say _lean_? :doublecup:"
+    msg.send "+:doublecup:"
 
   robot.hear /cop kill(a|er) t/i, (msg) ->
     msg.send "@samtallent"
 
   robot.hear  /lenny/i, (msg) ->
-    msg.send "_o u kno_ ( ͡° ͜ʖ ͡°)"
-
+    msg.send "_o u kno ( ͡° ͜ʖ ͡°)_"
+  
+  robot.hear /kanye/i, (msg) ->
+    msg.send "+:yeezus:"
+  
   robot.leave (msg) ->
-    msg.send ":rip:"
+    msg.send "+:rip:"
+    
+  robot.enter (msg) ->
+    msg.send "+:wave:"
