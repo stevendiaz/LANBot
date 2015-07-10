@@ -103,7 +103,8 @@ class AMAManager
           msg.send "Invalid remove. 'ama remove' does not take parameters."
       else
           user = msg.message.user.name.toLowerCase()
-          if candidates.indexOf(user) > -1
+          index = candidates.indexOf(user)
+          if index > -1
               candidates.splice(index, 1)
               @save
               msg.send "You have been removed as an AMA candidate."
@@ -116,7 +117,7 @@ class AMAManager
 
     listCandidates: (msg, candidates) ->
         msg.send "There are #{candidates.length} candidates for the AMA"
-        for(candidate in candidates)
+        for candidate in candidates
             msg.send "#{candidate}"
 
 
