@@ -53,19 +53,20 @@ class AMAManager
         msg.send "ama start - pick someone for an AMA and repeat every 24 hours"
         msg.send "ama stop - stop picking AMAs every 24 hours"
         msg.send "ama current - display the current AMA celebrity"
-        msg.send "ama add <name> - manually add someone to the candidates list"
-        msg.send "ama remove <name> -manually remove someone from the candidates list"
+        msg.send "ama add - add yourself to the AMA list"
+        msg.send "ama remove - remove yourself from the AMA list"
         msg.send "ama list - lists all AMA candidates"
+        msg.send "ama clear - clears selections (admin only)"
 
-    startAMA: (msg, candidates) ->
+    startAMA: (msg) ->
         if @intervalID
             msg.send "sorry, an AMA is already going. try ama stop"
         else
-            firstSelection = candidates[Math.floor(Math.random() * candidates.length)]
+            firstSelection = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
             msg.send "#{firstSelection} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
             @current = firstSelection
             @intervalID = setInterval( ->
-                selected = candidates[Math.floor(Math.random() * candidates.length)]
+                selected = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
                 msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
                 @current = selected
               , 1000 * 60 * 60 * 24) #24 hours
@@ -85,39 +86,54 @@ class AMAManager
         else
             msg.send "no one is currently doing an AMA."
     
-    addCandidate: (msg, candidates, isManual = false) ->
+    addCandidate: (msg) ->
         if msg.match[1] != ""
             msg.send "Invalid add. `ama add` does not take parameters. "
         else
             user = msg.message.user.name.toLowerCase()
             #checks to see if user is already a candidate
-            if candidates.indexOf(user) < 0 
-                candidates.push(user)
-                @save
-                msg.send "You have been added as an AMA candidate"
-            else
-                msg.send "You are already an AMA candidate"
+            try
+                index = @storage.candidates.indexOf(user)
+            catch
+                @storage.candidates = []
+                index = @storage.candidates.indexOf(user)
+            finally
+                if index < 0
+                    @storage.candidates.push(user)
+                    @save
+                    msg.send "You have been added as an AMA candidate."
+                else
+                    msg.send "You are already an AMA candidate."
 
-    removeCandidate: (msg, candidates, isManual = false) ->
+    removeCandidate: (msg) ->
       if msg.match[1] != ""
           msg.send "Invalid remove. 'ama remove' does not take parameters."
       else
-          user = msg.message.user.name.toLowerCase()
-          index = candidates.indexOf(user)
-          if index > -1
-              candidates.splice(index, 1)
-              @save
-              msg.send "You have been removed as an AMA candidate."
-          else
-              msg.send "You are not an AMA candidate."
+            user = msg.message.user.name.toLowerCase()
+            try
+                index = @storage.candidates.indexOf(user)
+            catch
+                @storage.candidates = []
+                index = @storage.cnadidates.indexOf(user)
+            finally
+                if index > -1
+                    @storage.candidates.splice(index, 1)
+                    @save
+                    msg.send "You have been removed as an AMA candidate."
+                else
+                    msg.send "You are not an AMA candidate. "
 
-    clearCandidates: (msg, candidates) ->
-        candidates = []
-        @save
+    clearCandidates: (msg) ->
+        if @storage.candidates.length > 0
+            @storage.candidates = []
+            @save
+            msg.send "Candidates cleared. "
+        else
+            msg.send "There are no candidates to clear."
 
-    listCandidates: (msg, candidates) ->
-        msg.send "There are #{candidates.length} candidates for the AMA"
-        for candidate in candidates
+    listCandidates: (msg) ->
+        msg.send "There are #{@storage.candidates.length} candidates for the AMA"
+        for candidate in @storage.candidates
             msg.send "#{candidate}"
 
 
@@ -155,14 +171,14 @@ module.exports = (robot) ->
     robot.hear /^\s*ama(.*) (.*)/i, (msg) ->
         cmd = msg.match[0].split(" ")[1]
         switch cmd
-            when "start" then checkMessage msg, ama.startAMA, ama.storage.candidates
+            when "start" then checkMessage msg, ama.startAMA
             when "stop" then checkMessage msg, ama.stopAMA
-            when "add" then checkMessage msg, ama.addCandidate, ama.storage.candidates, true
-            when "remove" then checkMessage msg, ama.removeCandidate, ama.storage.candidates, true
+            when "add" then checkMessage msg, ama.addCandidate
+            when "remove" then checkMessage msg, ama.removeCandidate
             when "current" then checkMessage msg, ama.currentAMA
-            when "list" then checkMessage msg, ama.listCandidates, ama.storage.candidates
+            when "list" then checkMessage msg, ama.listCandidates
             when "help" then ama.printHelp msg
-            when "clear" then checkRestrictedMessage msg, ama.clearCandidates, ama.storage.candidates
+            when "clear" then checkRestrictedMessage msg, ama.clearCandidates
             else msg.send "Invalid command, say \"ama help\" for help"
 
     robot.enter (msg) ->
