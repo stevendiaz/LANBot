@@ -92,7 +92,7 @@ class AMAManager
             user = msg.message.user.name.toLowerCase()
             #checks to see if user is already a candidate
             if candidates.indexOf(user) < 0 
-                candidates.push(newCandidate)
+                candidates.push(user)
                 @save
                 msg.send "You have been added as an AMA candidate"
             else
