@@ -17,6 +17,7 @@
 #
 # Author:
 #   Gregory Cerna
+#   Steven Diaz
 
 
 class AMAManager
@@ -29,11 +30,20 @@ class AMAManager
             @robot.logger.debug "AMA data loaded: " + JSON.stringify(@storage)
 
         @channels = ["bots", "ama", "Shell"] # channels where AMAs can run
+
+        @admins = ["greg", "stevendiaz", "thomas", "Shell"] 
         @intervalID = null # if not null, AMAs are currently on
         @current = null # current AMA person
 
         @robot.brain.on "loaded", storageLoaded
         storageLoaded()
+
+    checkPermission: (msg) ->
+      if @admins.length == 0 || msg.message.user.name in @admins
+        return true
+      else
+        msg.send "You lack permission for this command"
+        return false    
 
     save: ->
         @robot.logger.debug "Saving AMA data: " + JSON.stringify(@storage)
@@ -74,45 +84,41 @@ class AMAManager
             msg.send "#{@current} is the current AMA celebrity! Ask them anything!"
         else
             msg.send "no one is currently doing an AMA."
-
-
+    
     addCandidate: (msg, candidates, isManual = false) ->
-        if isManual
-            if msg.match[1] != ""
-                newCandidate = msg.match[2]
-            else
-                msg.send "Invalid attempt to add candidate"
-                return
+        if msg.match[1] != ""
+            msg.send "Invalid add. `ama add` does not take parameters. "
         else
-            newCandidate = msg.user.name.toLowerCase()
-
-        if candidates.indexOf(newCandidate) < 0 #does ntohing if user is already there
-            candidates.push(newCandidate)
-            @save
-            msg.send "#{newCandidate} has been added as an AMA candidate"
+            user = msg.message.user.name.toLowerCase()
+            #checks to see if user is already a candidate
+            if candidates.indexOf(user) < 0 
+                candidates.push(newCandidate)
+                @save
+                msg.send "You have been added as an AMA candidate"
+            else
+                msg.send "You are already an AMA candidate"
 
     removeCandidate: (msg, candidates, isManual = false) ->
-        if isManual
-            if msg.match[1] != ""
-                oldCandidate = msg.match[2]
-            else
-                msg.send "Invalid attempt to remove candidate"
-                return
-        else
-            oldCandidate = msg.user.name.toLowerCase()
+      if msg.match[1] != ""
+          msg.send "Invalid remove. 'ama remove' does not take parameters."
+      else
+          user = msg.message.user.name.toLowerCase()
+          if candidates.indexOf(user) > -1
+              candidates.splice(index, 1)
+              @save
+              msg.send "You have been removed as an AMA candidate."
+          else
+              msg.send "You are not an AMA candidate."
 
-        index = candidates.indexOf(oldCandidate)
-        if index > -1 #does nothing if user doesn't exist
-            candidates.splice(index, 1)
-            @save
-            msg.send "#{oldCandidate} has been removed as an AMA candidate"
-        else
-            msg.send "No such candidate"
+    clearCandidates: (msg, candidates) ->
+        candidates = []
+        @save
 
     listCandidates: (msg, candidates) ->
         msg.send "There are #{candidates.length} candidates for the AMA"
-        for candidate in candidates
+        for(candidate in candidates)
             msg.send "#{candidate}"
+
 
 
     validChannel: (msg) ->
@@ -137,6 +143,11 @@ module.exports = (robot) ->
             else
                 cmd msg
 
+    checkRestrictedMessage = (msg, cmd) ->
+        if ama.checkPermission msg
+            checkMessage msg, cmd
+
+
     robot.hear /^\s*ama\s*$/i, (msg) ->
         msg.send "Invalid command, say \"ama help\" for help"
 
@@ -150,6 +161,7 @@ module.exports = (robot) ->
             when "current" then checkMessage msg, ama.currentAMA
             when "list" then checkMessage msg, ama.listCandidates, ama.storage.candidates
             when "help" then ama.printHelp msg
+            when "clear" then checkRestrictedMessage msg, ama.clearCandidates, ama.storage.candidates
             else msg.send "Invalid command, say \"ama help\" for help"
 
     robot.enter (msg) ->
