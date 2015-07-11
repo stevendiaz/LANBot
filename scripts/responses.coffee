@@ -76,7 +76,7 @@ module.exports = (robot) ->
     msg.send "WEEK AGO"
 
   robot.hear /(^|\s+)lean/i, (msg) ->
-    msg.send "+:doublecup:"
+    msg.send ":doublecup:"
 
   robot.hear /cop kill(a|er) t/i, (msg) ->
     msg.send "@samtallent"
@@ -85,10 +85,10 @@ module.exports = (robot) ->
     msg.send "_o u kno ( ͡° ͜ʖ ͡°)_"
   
   robot.hear /kanye/i, (msg) ->
-    msg.send "+:yeezus:"
+    msg.send ":yeezus:"
   
   robot.leave (msg) ->
-    msg.send "+:rip:"
+    msg.send ":rip:"
     
   robot.enter (msg) ->
-    msg.send "+:wave:"
+    msg.send ":wave:"

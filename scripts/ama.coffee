@@ -31,7 +31,7 @@ class AMAManager
 
         @channels = ["bots", "ama", "Shell"] # channels where AMAs can run
 
-        @admins = ["greg", "stevendiaz", "thomas", "Shell"] 
+        @admins = ["andy", "greg", "stevendiaz", "thomas", "Shell"] 
         @intervalID = null # if not null, AMAs are currently on
         @current = null # current AMA person
 
@@ -183,9 +183,3 @@ module.exports = (robot) ->
             when "help" then ama.printHelp msg
             when "clear" then checkRestrictedMessage msg, ama.clearCandidates
             else msg.send "Invalid command, say \"ama help\" for help"
-
-    robot.enter (msg) ->
-        checkMessage msg, ama.addCandidate, ama.storage.candidates
-
-    robot.leave (msg) ->
-        checkMessage msg, ama.removeCandidate, ama.storage.candidates
