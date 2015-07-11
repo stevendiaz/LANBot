@@ -31,7 +31,7 @@ class AMAManager
 
         @channels = ["bots", "ama", "Shell"] # channels where AMAs can run
 
-        @admins = ["greg", "stevendiaz", "thomas", "Shell"] 
+        @admins = ["andy", "greg", "stevendiaz", "thomas", "Shell"] 
         @intervalID = null # if not null, AMAs are currently on
         @current = null # current AMA person
 
