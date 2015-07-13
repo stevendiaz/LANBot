@@ -61,17 +61,20 @@ class AMAManager
                  """
 
     startAMA: (msg) ->
-        if @intervalID
-            msg.send "sorry, an AMA is already going. try ama stop"
+        if @storage.candidates
+          if @intervalID
+              msg.send "sorry, an AMA is already going. try ama stop"
+          else
+              firstSelection = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
+              msg.send "#{firstSelection} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
+              @current = firstSelection
+              @intervalID = setInterval( ->
+                  selected = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
+                  msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
+                  @current = selected
+                , 1000 * 60 * 60 * 24) #24 hours
         else
-            firstSelection = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
-            msg.send "#{firstSelection} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
-            @current = firstSelection
-            @intervalID = setInterval( ->
-                selected = @storage.candidates[Math.floor(Math.random() * @storage.candidates.length)]
-                msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
-                @current = selected
-              , 1000 * 60 * 60 * 24) #24 hours
+          msg.send "Unable to start AMA: no candidates."
 
     stopAMA: (msg) ->
         if @intervalID
