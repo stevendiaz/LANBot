@@ -174,8 +174,8 @@ module.exports = (robot) ->
     robot.hear /^\s*ama\s*$/i, (msg) ->
         msg.send "Invalid command, say \"ama help\" for help"
 
-    robot.hear /^\s*ama(.*) (.*)/i, (msg) ->
-        cmd = msg.match[0].split(" ")[1]
+    robot.hear /^\s*ama (.*)/i, (msg) ->
+        cmd = msg.match[1]
         switch cmd
             when "start" then checkMessage msg, ama.startAMA
             when "stop" then checkMessage msg, ama.stopAMA
