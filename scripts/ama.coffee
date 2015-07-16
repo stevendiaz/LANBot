@@ -31,7 +31,7 @@ class AMAManager
 
         @channels = ["bots", "ama", "Shell"] # channels where AMAs can run
 
-        @admins = ["andy", "greg", "stevendiaz", "thomas", "Shell"] 
+        @admins = ["andy", "greg", "stevendiaz", "thomas", "Shell"]
         @intervalID = null # if not null, AMAs are currently on
         @current = null # current AMA person
 
@@ -43,7 +43,7 @@ class AMAManager
         return true
       else
         msg.send "You lack permission for this command"
-        return false    
+        return false
 
     save: ->
         @robot.logger.debug "Saving AMA data: " + JSON.stringify(@storage)
@@ -90,43 +90,37 @@ class AMAManager
             msg.send "#{@current} is the current AMA celebrity! Ask them anything!"
         else
             msg.send "no one is currently doing an AMA."
-    
+
     addCandidate: (msg) ->
-        if msg.match[1] != ""
-            msg.send "Invalid add. `ama add` does not take parameters. "
-        else
-            user = msg.message.user.name.toLowerCase()
-            #checks to see if user is already a candidate
-            try
-                index = @storage.candidates.indexOf(user)
-            catch
-                @storage.candidates = []
-                index = @storage.candidates.indexOf(user)
-            finally
-                if index < 0
-                    @storage.candidates.push(user)
-                    @save
-                    msg.send "You have been added as an AMA candidate."
-                else
-                    msg.send "You are already an AMA candidate."
+        user = msg.message.user.name.toLowerCase()
+        #checks to see if user is already a candidate
+        try
+            index = @storage.candidates.indexOf(user)
+        catch
+            @storage.candidates = []
+            index = @storage.candidates.indexOf(user)
+        finally
+            if index < 0
+                @storage.candidates.push(user)
+                @save
+                msg.send "You have been added as an AMA candidate."
+            else
+                msg.send "You are already an AMA candidate."
 
     removeCandidate: (msg) ->
-      if msg.match[1] != ""
-          msg.send "Invalid remove. 'ama remove' does not take parameters."
-      else
-            user = msg.message.user.name.toLowerCase()
-            try
-                index = @storage.candidates.indexOf(user)
-            catch
-                @storage.candidates = []
-                index = @storage.cnadidates.indexOf(user)
-            finally
-                if index > -1
-                    @storage.candidates.splice(index, 1)
-                    @save
-                    msg.send "You have been removed as an AMA candidate."
-                else
-                    msg.send "You are not an AMA candidate. "
+        user = msg.message.user.name.toLowerCase()
+        try
+            index = @storage.candidates.indexOf(user)
+        catch
+            @storage.candidates = []
+            index = @storage.cnadidates.indexOf(user)
+        finally
+            if index > -1
+                @storage.candidates.splice(index, 1)
+                @save
+                msg.send "You have been removed as an AMA candidate."
+            else
+                msg.send "You are not an AMA candidate. "
 
     clearCandidates: (msg) ->
         if @storage.candidates.length > 0
