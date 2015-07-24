@@ -89,6 +89,8 @@ module.exports = (robot) ->
   
   robot.leave (msg) ->
     msg.send ":rip:"
-    
-  robot.enter (msg) ->
-    msg.send ":wave:"
+  
+  robot.hear /(.*?)/, (msg) ->
+    selector = 2
+    if Math.floor(Math.random() * 300) = selector
+      msg.send "same"
