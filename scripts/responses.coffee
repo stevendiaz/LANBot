@@ -92,5 +92,5 @@ module.exports = (robot) ->
   
   robot.hear /(.*?)/, (msg) ->
     selector = 2
-    if Math.floor(Math.random() * 300) = selector
+    if Math.floor(Math.random() * 300) == selector
       msg.send "same"
