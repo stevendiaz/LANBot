@@ -59,6 +59,7 @@ class AMAManager
                  ama remove - remove yourself from the AMA list
                  ama list - lists all AMA candidates
                  ama clear - clears selections (admin only)
+                 ama odds - shows odds of each candidate being chosen
                  """
 
     selectUser = () ->
@@ -201,7 +202,7 @@ module.exports = (robot) ->
             when "remove" then checkMessage msg, ama.removeCandidate
             when "current" then checkMessage msg, ama.currentAMA
             when "list" then checkMessage msg, ama.listCandidates
-            when "listWeights" then checkMessage msg, ama.listWeights
+            when "odds" then checkMessage msg, ama.listWeights
             when "help" then ama.printHelp msg
             when "clear" then checkRestrictedMessage msg, ama.clearCandidates
             else msg.send "Invalid command, say \"ama help\" for help"
