@@ -96,11 +96,11 @@ class AMAManager
           if @intervalID
               msg.send "sorry, an AMA is already going. try ama stop"
           else
-              firstSelection = selectUser(true)
+              firstSelection = selectUser()
               msg.send "#{firstSelection} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
               @current = firstSelection
               @intervalID = setInterval( ->
-                  selected = selectUser(true)
+                  selected = selectUser()
                   msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
                   @current = selected
                 , 1000 * 60 * 60 * 24) #24 hours
