@@ -61,7 +61,7 @@ class AMAManager
                  ama clear - clears selections (admin only)
                  """
 
-    selectUser = (pass) ->
+    selectUser = () ->
         weightedUserList = @storage.candidates
         weightedUserArray = []
         resetWeights = true
