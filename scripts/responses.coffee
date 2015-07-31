@@ -9,11 +9,43 @@
 #
 # Commands:
 #   None
+#
 # Author:
 #   Lambda Alpha Nu
 
+class ResponsesManager
+
+  constructor: ->
+    @muted = []
+
+  Array::remove = (obj) ->
+    @filter (el) -> el isnt obj
+
+  isMuted: (msg) ->
+    msg.message.user.room in @muted
+
+  mute: (msg) ->
+    replies = [':disappointed:', ':cry:', ':rip:', ':pensive:', ':no_mouth:', ':fu:']
+    msg.send msg.random replies
+
+    @muted.push msg.message.user.room
+
+    that = this
+    setTimeout( ->
+      that.unmute(msg)
+    , 5 * 60 * 1000) # 5 minutes
+
+  unmute: (msg) ->
+    res = []
+    for room in @muted
+      if room != msg.message.user.room
+        res.push room
+
+    @muted = res
 
 module.exports = (robot) ->
+
+  responses = new ResponsesManager
 
   robot.hear /\~cal/i, (msg) ->
     msg.send "http://goo.gl/lXHqbv"
@@ -25,72 +57,103 @@ module.exports = (robot) ->
     msg.send "http://goo.gl/RR5VmC"
 
   robot.hear /coachwiggly/i, (msg) ->
-    msg.send "@andy"
+    if !responses.isMuted msg
+      msg.send "@andy"
 
   robot.hear /(^.{0,4}mo[ou]se|((?!masha).{5}mo[ou]se))/i, (msg) ->
-    msg.send "@mashamouse"
+    if !responses.isMuted msg
+      msg.send "@mashamouse"
 
   robot.hear /^\s*friday\s*$/i, (msg) ->
-    msg.send "DRINK DAY"
+    if !responses.isMuted msg
+      msg.send "DRINK DAY"
 
   robot.hear /^\s*tuesday\s*$/i, (msg) ->
-    msg.send "CLUB GOIN UP"
+    if !responses.isMuted msg
+      msg.send "CLUB GOIN UP"
 
   robot.hear /node\.?js/i, (msg) ->
-    msg.send "node.js is the only real dev language"
+    if !responses.isMuted msg
+      msg.send "node.js is the only real dev language"
 
   robot.hear /mongo/i, (msg) ->
-    msg.send "mongodb is web scale"
+    if !responses.isMuted msg
+      msg.send "mongodb is web scale"
 
   robot.hear /it's *happening/i, (msg) ->
-    msg.send "http://i.imgur.com/7drHiqr.gif"
+    if !responses.isMuted msg
+      msg.send "http://i.imgur.com/7drHiqr.gif"
 
   robot.hear /little *foot/i, (msg) ->
-    msg.send "@steven"
+    if !responses.isMuted msg
+      msg.send "@steven"
 
   robot.hear /m'lan/i, (msg) ->
-    msg.send "@erynzzz"
+    if !responses.isMuted msg
+      msg.send "@erynzzz"
 
   robot.hear /(not|barely|hardly) *a *(huge|big)? *fan/i, (msg) ->
-    msg.send "https://imgs.xkcd.com/comics/turbine.png"
+    if !responses.isMuted msg
+      msg.send "https://imgs.xkcd.com/comics/turbine.png"
 
   robot.hear /(tobbert|databae)/i, (msg) ->
-    msg.send "@rmlynch"
+    if !responses.isMuted msg
+      msg.send "@rmlynch"
 
   robot.hear /(^|\s+)stevie/i, (msg) ->
-    msg.send "@steven"
+    if !responses.isMuted msg
+      msg.send "@steven"
 
   robot.hear /real *man/i, (msg) ->
-    msg.send "I think you mean a Real Hacker, genders yo"
+    if !responses.isMuted msg
+      msg.send "I think you mean a Real Hacker, genders yo"
 
   robot.hear /(\s+|^)ls(\s+|$)/, (msg) ->
-    msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to `ls` in slack!"
+    if !responses.isMuted msg
+      msg.send "Hey everyone, make fun of " + msg.message.user.name.toLowerCase() + " for trying to `ls` in slack!"
 
   robot.hear /long *live *slackbot/i, (msg) ->
-    msg.send "I killed slackbot"
+    if !responses.isMuted msg
+      msg.send "I killed slackbot"
 
   robot.hear /:crab:/, (msg) ->
-    msg.send "Ravioli ravioli give me the formuoli"
+    if !responses.isMuted msg
+      msg.send "Ravioli ravioli give me the formuoli"
 
   robot.hear /about a week ago/i, (msg) ->
-    msg.send "WEEK AGO"
+    if !responses.isMuted msg
+      msg.send "WEEK AGO"
 
   robot.hear /(^|\s+)lean/i, (msg) ->
-    msg.send ":doublecup:"
+    if !responses.isMuted msg
+      msg.send ":doublecup:"
 
   robot.hear /cop kill(a|er) t/i, (msg) ->
-    msg.send "@samtallent"
+    if !responses.isMuted msg
+      msg.send "@samtallent"
 
   robot.hear  /lenny/i, (msg) ->
-    msg.send "_o u kno ( ͡° ͜ʖ ͡°)_"
-  
+    if !responses.isMuted msg
+      msg.send "_o u kno ( ͡° ͜ʖ ͡°)_"
+
   robot.hear /kanye/i, (msg) ->
-    msg.send ":yeezus:"
-  
+    if !responses.isMuted msg
+      msg.send ":yeezus:"
+
+  robot.respond /stfu/i, (msg) ->
+    if !responses.isMuted msg
+      responses.mute msg
+
+  robot.hear /^stfu lanbot$/i, (msg) ->
+    if !responses.isMuted msg
+      responses.mute msg
+
   robot.leave (msg) ->
-    msg.send ":rip:"
-  
+    if !responses.isMuted msg
+      msg.send ":rip:"
+
   robot.hear /(.*?)/, (msg) ->
     selector = 2
     if Math.floor(Math.random() * 300) == selector
-      msg.send "same"
+      if !responses.isMuted msg
+        msg.send "same"
