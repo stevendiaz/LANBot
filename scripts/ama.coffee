@@ -134,8 +134,9 @@ class AMAManager
         user = msg.message.user.name.toLowerCase()
         if hasCandidate(user)
             delete @storage.candidates[user]
+            msg.send "You have been removed as an AMA candidate."
         else
-            msg.send "You have been added as an AMA candidate."
+            msg.send "You are not an AMA candidate."
 
     clearCandidates: (msg) ->
         if Object.keys(@storage.candidates).length > 0
