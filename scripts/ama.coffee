@@ -79,9 +79,9 @@ class AMAManager
 
         if resetWeights
             for user, weight of @storage.candidates
-                @storage.candidates[user] = 1.0
+                @storage.candidates[user] = @storage.candidates[user] * 2.0
             weightedUserList = @storage.candidates
-            smallestWeight = 1.0
+            smallestWeight = smallestWeight * 2.0
 
         for user, weight of @storage.candidates
             normalizedWeight = weight / smallestWeight
