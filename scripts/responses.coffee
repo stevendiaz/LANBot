@@ -130,8 +130,8 @@ module.exports = (robot) ->
 
   robot.leave (msg) ->
     responses.sendMessage msg, ":rip:"
-
-  robot.hear /(.*?)/, (msg) ->
+  
+  robot.catchAll (msg) ->
     selector = 2
     if Math.floor(Math.random() * 300) == selector
       responses.sendMessage msg, "same"
