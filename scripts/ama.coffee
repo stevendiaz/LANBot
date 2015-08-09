@@ -62,6 +62,10 @@ class AMAManager
                  ama odds - shows odds of each candidate being chosen
                  """
 
+    pass: (msg) ->
+        @storage.candidates[@current] = @storage.candidates[@current] * 2.0
+        stopAMA(msg)
+
     selectUser = () ->
         weightedUserList = @storage.candidates
         weightedUserArray = []
@@ -79,9 +83,9 @@ class AMAManager
 
         if resetWeights
             for user, weight of @storage.candidates
-                @storage.candidates[user] = 1.0
+                @storage.candidates[user] = @storage.candidates[user] * 2.0
             weightedUserList = @storage.candidates
-            smallestWeight = 1.0
+            smallestWeight = smallestWeight * 2.0
 
         for user, weight of @storage.candidates
             normalizedWeight = weight / smallestWeight
@@ -103,11 +107,13 @@ class AMAManager
                   selected = selectUser()
                   msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
                   @current = selected
+                  @storage.date = new Date()
+                  @storage.current = @current
                 , 1000 * 60 * 60 * 24) #24 hours
         else
           msg.send "Unable to start AMA: no candidates."
 
-    stopAMA: (msg) ->
+    stopAMA = (msg) ->
         if @intervalID
             msg.send "the AMA is over! thank you everyone for your time."
             clearInterval(@intervalID)
@@ -115,6 +121,10 @@ class AMAManager
             @current = null
         else
             msg.send "there's no AMA going on right now. try \"ama start\""
+
+    #helper function for stopAMA because I couldn't call it in pass as it was for whatever reason
+    stopAMA: (msg) ->
+        stopAMA(msg)
 
     currentAMA: (msg) ->
         if @current
@@ -134,8 +144,9 @@ class AMAManager
         user = msg.message.user.name.toLowerCase()
         if hasCandidate(user)
             delete @storage.candidates[user]
+            msg.send "You have been removed as an AMA candidate."
         else
-            msg.send "You have been added as an AMA candidate."
+            msg.send "You are not an AMA candidate."
 
     clearCandidates: (msg) ->
         if Object.keys(@storage.candidates).length > 0
@@ -203,6 +214,7 @@ module.exports = (robot) ->
             when "current" then checkMessage msg, ama.currentAMA
             when "list" then checkMessage msg, ama.listCandidates
             when "odds" then checkMessage msg, ama.listWeights
+            when "pass" then checkMessage msg, ama.pass
             when "help" then ama.printHelp msg
             when "clear" then checkRestrictedMessage msg, ama.clearCandidates
             else msg.send "Invalid command, say \"ama help\" for help"
