@@ -107,8 +107,6 @@ class AMAManager
                   selected = selectUser()
                   msg.send "#{selected} has been selected to be today's AMA celebrity! Ask away, and anything goes :wink:"
                   @current = selected
-                  @storage.date = new Date()
-                  @storage.current = @current
                 , 1000 * 60 * 60 * 24) #24 hours
         else
           msg.send "Unable to start AMA: no candidates."
