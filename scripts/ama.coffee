@@ -62,6 +62,14 @@ class AMAManager
                  ama odds - shows odds of each candidate being chosen
                  """
 
+    pass: (msg) ->
+        user = msg.message.user.name
+        if user.toLowerCase() == @current.toLowerCase()
+            @storage.candidates[@current] = @storage.candidates[@current] * 2.0
+            stopAMA(msg)
+        else
+            msg.send('Sorry, you do not have permission for this command')
+
     selectUser = () ->
         weightedUserList = @storage.candidates
         weightedUserArray = []
@@ -107,7 +115,7 @@ class AMAManager
         else
           msg.send "Unable to start AMA: no candidates."
 
-    stopAMA: (msg) ->
+    stopAMA = (msg) ->
         if @intervalID
             msg.send "the AMA is over! thank you everyone for your time."
             clearInterval(@intervalID)
@@ -115,6 +123,10 @@ class AMAManager
             @current = null
         else
             msg.send "there's no AMA going on right now. try \"ama start\""
+
+    #helper function for stopAMA because I couldn't call it in pass as it was for whatever reason
+    stopAMA: (msg) ->
+        stopAMA(msg)
 
     currentAMA: (msg) ->
         if @current
@@ -153,6 +165,9 @@ class AMAManager
         msg.send str
 
     listCandidates: (msg) ->
+        @storage.candidates['dog'] = 1
+        @storage.candidates['cat'] = .25
+        @storage.candidates['horse'] = .5
         str = "There are #{Object.keys(@storage.candidates).length} candidates for the AMA"
         for candidate, weight of @storage.candidates
             str = str + "\n#{candidate}"
@@ -204,6 +219,7 @@ module.exports = (robot) ->
             when "current" then checkMessage msg, ama.currentAMA
             when "list" then checkMessage msg, ama.listCandidates
             when "odds" then checkMessage msg, ama.listWeights
+            when "pass" then checkMessage msg, ama.pass
             when "help" then ama.printHelp msg
             when "clear" then checkRestrictedMessage msg, ama.clearCandidates
             else msg.send "Invalid command, say \"ama help\" for help"
