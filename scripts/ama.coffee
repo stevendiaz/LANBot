@@ -40,7 +40,6 @@ class AMAManager
         storageLoaded()
 
     checkPermission: (msg) ->
-      console.log("check admins" + @admins)
       if @admins.length == 0 || msg.message.user.name in @admins
         return true
       else
