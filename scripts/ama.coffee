@@ -40,6 +40,7 @@ class AMAManager
         storageLoaded()
 
     checkPermission: (msg) ->
+      console.log("check admins" + @admins)
       if @admins.length == 0 || msg.message.user.name in @admins
         return true
       else
@@ -63,8 +64,12 @@ class AMAManager
                  """
 
     pass: (msg) ->
-        @storage.candidates[@current] = @storage.candidates[@current] * 2.0
-        stopAMA(msg)
+        user = msg.message.user.name
+        if user.toLowerCase() == @current.toLowerCase()
+            @storage.candidates[@current] = @storage.candidates[@current] * 2.0
+            stopAMA(msg)
+        else
+            msg.send('Sorry, you do not have permission for this command')
 
     selectUser = () ->
         weightedUserList = @storage.candidates
@@ -161,6 +166,9 @@ class AMAManager
         msg.send str
 
     listCandidates: (msg) ->
+        @storage.candidates['dog'] = 1
+        @storage.candidates['cat'] = .25
+        @storage.candidates['horse'] = .5
         str = "There are #{Object.keys(@storage.candidates).length} candidates for the AMA"
         for candidate, weight of @storage.candidates
             str = str + "\n#{candidate}"
