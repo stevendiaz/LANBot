@@ -60,6 +60,7 @@ class AMAManager
                  ama list - lists all AMA candidates
                  ama clear - clears selections (admin only)
                  ama odds - shows odds of each candidate being chosen
+                 ama pass - stops the ama and returns the selected candidate's weight to the previous value
                  """
 
     pass: (msg) ->
