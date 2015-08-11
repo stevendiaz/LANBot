@@ -166,9 +166,9 @@ class AMAManager
         msg.send str
 
     listCandidates: (msg) ->
-        @storage.candidates['dog'] = 1
-        @storage.candidates['cat'] = .25
-        @storage.candidates['horse'] = .5
+        delete @storage.candidates['dog']
+        delete @storage.candidates['cat']
+        delete @storage.candidates['horse']
         str = "There are #{Object.keys(@storage.candidates).length} candidates for the AMA"
         for candidate, weight of @storage.candidates
             str = str + "\n#{candidate}"
