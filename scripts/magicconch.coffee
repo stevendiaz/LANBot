@@ -1,5 +1,6 @@
 # Description:
-#   Ask it questions, receive valuable insight from the oracle that is the Magic Conch Shell
+#   For all of those tough life decisions you hate to make, the Magic Conch
+#	Shell is here for you! Just ask it a question and get an answer immediately
 #
 # Dependencies:
 #   None
@@ -16,7 +17,7 @@
 module.exports = (robot) ->
 	
 	robot.hear /^\s*magic conch (.*)/i, (msg) ->
-		if(Math.floor(Math.random() *500) == 2)
+		if Math.floor(Math.random() * 300) == 2
 			msg.send "Go fuck yourself"
 		else
 			if msg.match[1].split(" ")[0] == "help"
