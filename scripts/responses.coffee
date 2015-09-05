@@ -56,6 +56,15 @@ module.exports = (robot) ->
   robot.hear /\~shame/i, (msg) ->
     msg.send "http://goo.gl/RR5VmC"
 
+  robot.hear /git\ status/i, (msg) ->
+    msg.send "```\n"
+             "On branch slack\n" +
+             "Your branch is up-to-date with 'you/fucking/idiot'\n" +
+             "Untracked files:\n\n" +
+             "  (use \"git add <file>...\" to include in what will be committed)\n\n" +
+             "      a/brain.cpp\n\n" +
+             "nothing added to commit but untracked files present (use \"git add\" to track)"
+
   robot.hear /coachwiggly/i, (msg) ->
     if !responses.isMuted msg
       msg.send "@andy"
