@@ -58,7 +58,7 @@ module.exports = (robot) ->
 
   robot.hear /git\ status/i, (msg) ->
     if !responses.isMuted msg
-      msg.send "```\n"
+      msg.send "```\n" +
                "On branch slack\n" +
                "Your branch is up-to-date with 'you/fucking/idiot'\n" +
                "Untracked files:\n\n" +
