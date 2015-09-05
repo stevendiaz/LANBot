@@ -16,7 +16,7 @@
 
 module.exports = (robot) ->
 	
-	robot.hear /^\s*magic conch (.*)/i, (msg) ->
+	robot.hear /^\s*magic conch\W+(.*)/i, (msg) ->
 		if Math.floor(Math.random() * 300) == 2
 			msg.send "Go fuck yourself"
 		else
