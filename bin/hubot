@@ -3,6 +3,7 @@
 set -e
 
 npm install
+npm update
 if [ -f "config.sh" ]
 then
     source config.sh
