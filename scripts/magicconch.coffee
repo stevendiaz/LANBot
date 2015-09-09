@@ -16,7 +16,7 @@
 
 module.exports = (robot) ->
 	
-	robot.hear /^\s*magic conch (.*)/i, (msg) ->
+	robot.hear /^\s*magic conch\W+(.*)/i, (msg) ->
 		if Math.floor(Math.random() * 300) == 2
 			msg.send "Go fuck yourself"
 		else
@@ -24,8 +24,6 @@ module.exports = (robot) ->
 				msg.send "Ask the magic conch a question by sending `magic conch $question`"
 			else if msg.match[1].split(" ")[0] == "which"
 				msg.send "Neither"
-			else if msg.match[1].search(/do/i) > 0
-				msg.send "Nothing"
 			else
 				switch Math.floor(Math.random() * 7)
 					when 1 then msg.send "Maybe someday"
