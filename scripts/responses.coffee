@@ -142,6 +142,9 @@ module.exports = (robot) ->
   robot.leave (msg) ->
     responses.sendMessage msg, ":rip:"
   
+  robot.hear /(^|\s+)doug/i, (msg) ->
+    responses.sendMessage msg, "@arrdem"
+  
   robot.catchAll (msg) ->
     selector = 2
     
