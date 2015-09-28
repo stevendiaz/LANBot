@@ -143,7 +143,7 @@ module.exports = (robot) ->
     responses.sendMessage msg, ":rip:"
   
   robot.hear /(^|\s+)doug/i, (msg) ->
-    responses.sendMessage msg, "@arrdem"
+    responses.sendMessage msg, "@arrdem :doge:"
   
   robot.catchAll (msg) ->
     selector = 2
