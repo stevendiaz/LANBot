@@ -29,7 +29,7 @@ module.exports = (robot) ->
 					when 1 then msg.send "Maybe someday"
 					when 2 then msg.send "Follow the seahorse"
 					when 3 then msg.send "I don't think so"
-					when 4 then msg.send "No"
+					when 4 then msg.send "https://pbs.twimg.com/media/BnV69_bIMAAqY3B.jpg"
 					when 5 then msg.send "Yes"
 					when 6 then msg.send "Try asking again"
 
