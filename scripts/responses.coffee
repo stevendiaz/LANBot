@@ -83,6 +83,9 @@ module.exports = (robot) ->
   robot.hear /node\.?js/i, (msg) ->
     responses.sendMessage msg, "node.js is the only real dev language"
 
+  robot.hear /^\s*pizza\s*$/i, (msg) ->
+    responses.sendMessage msg, "@addy"
+
   robot.hear /mongo/i, (msg) ->
     responses.sendMessage msg, "mongodb is web scale"
 
