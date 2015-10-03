@@ -132,7 +132,7 @@ module.exports = (robot) ->
     responses.sendMessage msg, "_o u kno ( ͡° ͜ʖ ͡°)_"
 
   robot.hear /kanye/i, (msg) ->
-    responses.sendMessage msg, ":yeezus:"
+    responses.sendMessage msg, ":poop:"
 
   robot.respond /stfu/i, (msg) ->
     if !responses.isMuted msg
