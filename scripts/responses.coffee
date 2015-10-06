@@ -43,11 +43,7 @@ class ResponsesManager
   sendMessage: (msg, response) ->
       if !@isMuted msg
           msg.send response
-
-  checkCount: ->
-    
-    return 
-    
+          
 module.exports = (robot) ->
 
   responses = new ResponsesManager
