@@ -17,6 +17,7 @@ class ResponsesManager
 
   constructor: ->
     @muted = []
+    @count
 
   isMuted: (msg) ->
     msg.message.user.room in @muted
@@ -44,6 +45,10 @@ class ResponsesManager
       if !@isMuted msg
           msg.send response
 
+  checkCount: ->
+    
+    return 
+    
 module.exports = (robot) ->
 
   responses = new ResponsesManager
@@ -131,8 +136,16 @@ module.exports = (robot) ->
   robot.hear  /lenny/i, (msg) ->
     responses.sendMessage msg, "_o u kno ( ͡° ͜ʖ ͡°)_"
 
+  robot.hear /\~cake/i, (msg) ->
+    cake_replies = ["http://imgur.com/xpv1gZz", "http://imgur.com/blKDv1f", "http://imgur.com/BEqVbhZ", "http://imgur.com/b7D9Svx", "http://imgur.com/iFcbsoF", "http://imgur.com/NjDBhvE"]
+    responses.sendMessage msg, cake_replies[@count]
+    if(@count != 6)
+      @count += 1
+    else 
+      @count = 0
+  
   robot.hear /kanye/i, (msg) ->
-    responses.sendMessage msg, ":poop:"
+    responses.sendMessage msg, ":kanye:"
 
   robot.respond /stfu/i, (msg) ->
     if !responses.isMuted msg
