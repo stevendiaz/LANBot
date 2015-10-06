@@ -17,7 +17,6 @@ class ResponsesManager
 
   constructor: ->
     @muted = []
-    @count
 
   isMuted: (msg) ->
     msg.message.user.room in @muted
@@ -52,6 +51,7 @@ class ResponsesManager
 module.exports = (robot) ->
 
   responses = new ResponsesManager
+  @count
 
   robot.hear /\~cal/i, (msg) ->
     msg.send "http://goo.gl/lXHqbv"
