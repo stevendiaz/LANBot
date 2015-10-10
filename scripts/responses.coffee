@@ -156,6 +156,12 @@ module.exports = (robot) ->
   
   robot.hear /(^|\s+)doug/i, (msg) ->
     responses.sendMessage msg, "@arrdem :doge:"
+    
+  robot.hear /^\s*texas\s*$/i, (msg) ->
+    responses.sendMessage msg, "FIGHT"
+    
+  robot.hear /^\s*ou\s*$/i, (msg) ->
+    responses.sendMessage msg, "SUCKS"
   
   robot.catchAll (msg) ->
     selector = 2
