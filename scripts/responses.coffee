@@ -174,7 +174,6 @@ module.exports = (robot) ->
     
     if Math.floor(Math.random() * 10000) == selector
       responses.sendMessage msg, "http://dontecnico.com/wp-content/uploads/2014/08/1-millionth-visitor.gif"
-      return
 
     if Math.floor(Math.random() * 300) == selector
       responses.sendMessage msg, "same"
