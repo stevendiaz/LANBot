@@ -141,7 +141,7 @@ module.exports = (robot) ->
       @count = 0
   
   robot.hear /kanye/i, (msg) ->
-    responses.sendMessage msg, ":kanye:"
+    responses.sendMessage msg, ":yeezus:"
 
   robot.respond /stfu/i, (msg) ->
     if !responses.isMuted msg
