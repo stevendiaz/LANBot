@@ -157,18 +157,31 @@ module.exports = (robot) ->
   robot.hear /(^|\s+)doug/i, (msg) ->
     responses.sendMessage msg, "@arrdem :doge:"
     
-  robot.hear /^\s*texas\s*$/i, (msg) ->
+  robot.hear /^\s*texas!?\s*$/i, (msg) ->
     responses.sendMessage msg, "FIGHT"
     
-  robot.hear /^\s*ou\s*$/i, (msg) ->
+  robot.hear /^\s*ou!?\s*$/i, (msg) ->
     responses.sendMessage msg, "SUCKS"
+
+  robot.hear /timeaoeuaoeu/, (msg) ->
+    now = new Date
+    hour = now.getHours()
+    minute = now.getMinutes()
+    responses.sendMessage msg, hour + ":" + minute
   
   robot.catchAll (msg) ->
     selector = 2
     
     if Math.floor(Math.random() * 10000) == selector
       responses.sendMessage msg, "http://dontecnico.com/wp-content/uploads/2014/08/1-millionth-visitor.gif"
-      return 
+      return
 
     if Math.floor(Math.random() * 300) == selector
       responses.sendMessage msg, "same"
+
+    if Math.floor(Math.random() * 1000) == selector
+      now = new Date
+      hour = now.getHours() % 12
+      minute = now.getMinutes()
+
+      responses.sendMessage msg, "it's " + hour + ":" + minute + " and OU still sucks"
