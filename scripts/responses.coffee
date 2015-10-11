@@ -163,12 +163,6 @@ module.exports = (robot) ->
   robot.hear /^\s*ou!?\s*$/i, (msg) ->
     responses.sendMessage msg, "SUCKS"
 
-  robot.hear /timeaoeuaoeu/, (msg) ->
-    now = new Date
-    hour = now.getHours()
-    minute = now.getMinutes()
-    responses.sendMessage msg, hour + ":" + minute
-  
   robot.catchAll (msg) ->
     selector = 2
     
@@ -180,7 +174,7 @@ module.exports = (robot) ->
 
     if Math.floor(Math.random() * 1000) == selector
       now = new Date
-      hour = now.getHours() % 12
+      hour = (now.getHours() - 1) % 12 # decremented because hubot is in eastern time zone
       minute = now.getMinutes()
 
       responses.sendMessage msg, "it's " + hour + ":" + minute + " and OU still sucks"
