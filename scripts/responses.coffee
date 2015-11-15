@@ -170,19 +170,19 @@ module.exports = (robot) ->
     if v == 7
       responses.sendMessage msg, 
 
-  robot.hear /lanbot:? [rR]ule (1|[Oo]ne)$/i, (msg) ->
+  robot.respond /[rR]ule (1|[Oo]ne)$/i, (msg) ->
     responses.sendMessage msg, "1. have a life"
 
-  robot.hear /lanbot:? [rR]ule (2|[Tt]wo)$/i, (msg) ->
+  robot.respond /[rR]ule (2|[Tt]wo)$/i, (msg) ->
     responses.sendMessage msg, "2. be up front and honest"
 
-  robot.hear /lanbot:? [rR]ule (3|[Tt]hree)$/i, (msg) ->
+  robot.respond /[rR]ule (3|[Tt]hree)$/i, (msg) ->
     responses.sendMessage msg, "3. take no for an answer. no seriously do."
 
-  robot.hear /lanbot:? [rR]ule (4|[Ff]our)$/i, (msg) ->
+  robot.respond /[rR]ule (4|[Ff]our)$/i, (msg) ->
     responses.sendMessage msg, "4. you aren't exclusive until you say you're exclusive"
 
-  robot.hear /lanbot:? [rR]ule (5|[Ff]ive)$/i, (msg) ->
+  robot.respond /[rR]ule (5|[Ff]ive)$/i, (msg) ->
     responses.sendMessage msg, "5. Reid if you want to meet girls you need to do things that girls do"
 
   robot.hear /[rR]ule (42|[Ff]ourty [Tt]wo)$/i, (msg) ->
