@@ -166,6 +166,21 @@ module.exports = (robot) ->
   robot.hear /(python|anaconda)/i, (msg) ->
     responses.sendMessage msg, "you snek looking for prey and when you find it you strikes with a raging fury, unless she say's no.."
 
+  robot.hear /[rR]ule (1|one)/i, (msg) ->
+    responses.sendMessage msg, "1. have a life"
+
+  robot.hear /[rR]ule (2|two)/i, (msg) ->
+    responses.sendMessage msg, "2. be up front and honest"
+
+  robot.hear /[rR]ule (3|three)/i, (msg) ->
+    responses.sendMessage msg, "3. take no for an answer. no seriously do."
+
+  robot.hear /[rR]ule (4|four)/i, (msg) ->
+    responses.sendMessage msg, "4. you aren't exclusive until you say you're exclusive"
+
+  robot.hear /[rR]ule (5|five)/i, (msg) ->
+    responses.sendMessage msg, "5. Reid if you want to meet girls you need to do things that girls do"
+
   robot.catchAll (msg) ->
     selector = 2
     
