@@ -163,10 +163,14 @@ module.exports = (robot) ->
   robot.hear /^\s*ou!?\s*$/i, (msg) ->
     responses.sendMessage msg, "SUCKS"
 
-  robot.hear /(python|anaconda)/i, (msg) ->
-    responses.sendMessage msg, "you snek looking for prey and when you find it you strikes with a raging fury, unless she say's no.."
+  robot.hear /^([^:]python[^:]|anaconda)/i, (msg) ->
+    v = Math.floor(Math.random() * 100)
+    if v == 6
+      responses.sendMessage msg, "you snek looking for prey and when you find it you strikes with a raging fury, unless she say's no.."
+    if v == 7
+      responses.sendMessage msg, 
 
-  robot.hear /[rR]ule (1|[Oo]ne)/i, (msg) ->
+  robot.hear /lanbot:? [rR]ule (1|[Oo]ne)$/i, (msg) ->
     responses.sendMessage msg, "1. have a life"
 
   robot.hear /[rR]ule (2|[Tt]wo)/i, (msg) ->
