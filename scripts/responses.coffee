@@ -185,6 +185,9 @@ module.exports = (robot) ->
   robot.hear /lanbot:? [rR]ule (5|[Ff]ive)$/i, (msg) ->
     responses.sendMessage msg, "5. Reid if you want to meet girls you need to do things that girls do"
 
+  robot.hear /lanbot:? [rR]ule (42|[Ff]ourty [Tt]wo)$/i, (msg) ->
+    responses.sendMessage msg, "42. If it is on the internet, there is porn of it"
+
   robot.catchAll (msg) ->
     selector = 2
     
