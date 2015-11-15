@@ -163,6 +163,9 @@ module.exports = (robot) ->
   robot.hear /^\s*ou!?\s*$/i, (msg) ->
     responses.sendMessage msg, "SUCKS"
 
+  robot.hear /(python|anaconda)/i, (msg) ->
+    responses.sendMessage msg, "you snek looking for prey and when you find it you strikes with a raging fury, unless she say's no.."
+
   robot.catchAll (msg) ->
     selector = 2
     
