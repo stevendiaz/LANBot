@@ -143,7 +143,7 @@ module.exports = (robot) ->
   robot.hear /kanye/i, (msg) ->
     responses.sendMessage msg, ":yeezus:"
       
-  robot.hear /yc/i, (msg) ->
+  robot.hear /\byc/i, (msg) ->
     responses.sendMessage msg, "all hail the yuppie cabal"
 
   robot.respond /stfu/i, (msg) ->
