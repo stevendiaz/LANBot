@@ -142,6 +142,9 @@ module.exports = (robot) ->
   
   robot.hear /kanye/i, (msg) ->
     responses.sendMessage msg, ":yeezus:"
+      
+  robot.hear /\byc/i, (msg) ->
+    responses.sendMessage msg, "all hail the yuppie cabal"
 
   robot.respond /stfu/i, (msg) ->
     if !responses.isMuted msg
