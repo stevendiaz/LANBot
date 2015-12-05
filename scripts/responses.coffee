@@ -153,9 +153,6 @@ module.exports = (robot) ->
   robot.hear /^stfu lanbot$/i, (msg) ->
     if !responses.isMuted msg
       responses.mute msg
-
-  robot.leave (msg) ->
-    responses.sendMessage msg, ":rip:"
   
   robot.hear /(^|\s+)doug/i, (msg) ->
     responses.sendMessage msg, "@arrdem :doge:"
