@@ -70,7 +70,7 @@ module.exports = (robot) ->
              "```\n" +
              " ~cal    - LAN official calendar\n" +
              " ~bylaws - LAN official bylaws\n" +
-             " ~shame  - Lanbotr wall of shame\n" +
+             " ~shame  - Lanbot wall of shame\n" +
              " ~source - Source code for this bot\n" +
              " ~admin  - (probably) summon an admin to your aid\n" +
              "```\n"
