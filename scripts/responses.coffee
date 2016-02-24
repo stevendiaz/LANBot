@@ -61,6 +61,10 @@ module.exports = (robot) ->
   robot.hear /~source/i, (msg) ->
     msg.send "https://github.com/TexasLAN/LANBot"
 
+  robot.hear /~admin/i, (msg) ->
+    replies = ['HELP', 'HAAAAALP', "HELP HELP WE'RE BEING REPRESSED", "INSTANT REGRET"]
+    msg.send "ARRDMIN " + msg.random replies
+
   robot.hear /~help/i, (msg) ->
     msg.send "Bot features:\n" +
              "```\n" +
@@ -68,6 +72,7 @@ module.exports = (robot) ->
              " ~bylaws - LAN official bylaws\n" +
              " ~shame  - Lanbotr wall of shame\n" +
              " ~source - Source code for this bot\n" +
+             " ~admin  - (probably) summon an admin to your aid\n" +
              "```\n"
 
   robot.hear /git\ status/i, (msg) ->
