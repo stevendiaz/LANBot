@@ -61,6 +61,13 @@ module.exports = (robot) ->
   robot.hear /~source/i, (msg) ->
     msg.send "https://github.com/TexasLAN/LANBot"
 
+  robot.hear /~help/i, (msg) ->
+    msg.send "Bot features:\n" +
+             " ~cal    - LAN official calendar\n" +
+             " ~bylaws - LAN official bylaws\n" +
+             " ~shame  - Pledge wall of shame\n" +
+             " ~source - Source code for this bot\n"
+
   robot.hear /git\ status/i, (msg) ->
     if !responses.isMuted msg
       msg.send "```\n" +
