@@ -78,8 +78,8 @@ module.exports = (robot) ->
                "      a/brain.cpp\n\n" +
                "nothing added to commit but untracked files present (use \"git add\" to track)\n" +
                "```"
-  
-  robot.hear /^make\s*$/i, (msg) ->
+
+  robot.hear /^make(\s(clean|all|lanbot))*\s*$/i, (msg) ->
     responses.sendMessage msg, "make: *** No targets specified and no makefile found.  Stop."
 
   robot.hear /coachwiggly/i, (msg) ->
