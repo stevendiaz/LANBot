@@ -63,10 +63,12 @@ module.exports = (robot) ->
 
   robot.hear /~help/i, (msg) ->
     msg.send "Bot features:\n" +
+             "```\n" +
              " ~cal    - LAN official calendar\n" +
              " ~bylaws - LAN official bylaws\n" +
-             " ~shame  - Lanbot wall of shame\n" +
-             " ~source - Source code for this bot\n"
+             " ~shame  - Lanbotr wall of shame\n" +
+             " ~source - Source code for this bot\n" +
+             "```\n"
 
   robot.hear /git\ status/i, (msg) ->
     if !responses.isMuted msg
