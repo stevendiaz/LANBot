@@ -43,7 +43,7 @@ class ResponsesManager
   sendMessage: (msg, response) ->
       if !@isMuted msg
           msg.send response
-          
+
 module.exports = (robot) ->
 
   responses = new ResponsesManager
@@ -65,7 +65,7 @@ module.exports = (robot) ->
     msg.send "Bot features:\n" +
              " ~cal    - LAN official calendar\n" +
              " ~bylaws - LAN official bylaws\n" +
-             " ~shame  - Pledge wall of shame\n" +
+             " ~shame  - Lanbot wall of shame\n" +
              " ~source - Source code for this bot\n"
 
   robot.hear /git\ status/i, (msg) ->
@@ -144,12 +144,12 @@ module.exports = (robot) ->
     responses.sendMessage msg, cake_replies[@count]
     if(@count != 6)
       @count += 1
-    else 
+    else
       @count = 0
-  
+
   robot.hear /kanye/i, (msg) ->
     responses.sendMessage msg, ":yeezus:"
-      
+
   robot.hear /\byc/i, (msg) ->
     responses.sendMessage msg, "all hail the yuppie cabal"
 
@@ -163,13 +163,13 @@ module.exports = (robot) ->
 
   robot.leave (msg) ->
     responses.sendMessage msg, ":rip:"
-  
+
   robot.hear /(^|\s+)doug/i, (msg) ->
     responses.sendMessage msg, "@arrdem :doge:"
-    
+
   robot.hear /^\s*texas!?\s*$/i, (msg) ->
     responses.sendMessage msg, "FIGHT"
-    
+
   robot.hear /^\s*ou!?\s*$/i, (msg) ->
     responses.sendMessage msg, "SUCKS"
 
@@ -178,7 +178,7 @@ module.exports = (robot) ->
     if v == 6
       responses.sendMessage msg, "you snek looking for prey and when you find it you strikes with a raging fury, unless she say's no.."
     if v == 7
-      responses.sendMessage msg, 
+      responses.sendMessage msg,
 
   robot.respond /rule (1|one)$/i, (msg) ->
     responses.sendMessage msg, "1. have a life"
@@ -200,7 +200,7 @@ module.exports = (robot) ->
 
   robot.catchAll (msg) ->
     selector = 2
-    
+
     if Math.floor(Math.random() * 10000) == selector
       responses.sendMessage msg, "http://dontecnico.com/wp-content/uploads/2014/08/1-millionth-visitor.gif"
 
