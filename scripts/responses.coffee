@@ -58,6 +58,16 @@ module.exports = (robot) ->
   robot.hear /\~shame/i, (msg) ->
     msg.send "http://goo.gl/RR5VmC"
 
+  robot.hear /~source/i, (msg) ->
+    msg.send "https://github.com/TexasLAN/LANBot"
+
+  robot.hear /~help/i, (msg) ->
+    msg.send "Bot features:\n" +
+             " ~cal    - LAN official calendar\n" +
+             " ~bylaws - LAN official bylaws\n" +
+             " ~shame  - Pledge wall of shame\n" +
+             " ~source - Source code for this bot\n"
+
   robot.hear /git\ status/i, (msg) ->
     if !responses.isMuted msg
       msg.send "```\n" +
@@ -68,8 +78,8 @@ module.exports = (robot) ->
                "      a/brain.cpp\n\n" +
                "nothing added to commit but untracked files present (use \"git add\" to track)\n" +
                "```"
-  
-  robot.hear /^make\s*$/i, (msg) ->
+
+  robot.hear /^make(\s(clean|all|lanbot))*\s*$/i, (msg) ->
     responses.sendMessage msg, "make: *** No targets specified and no makefile found.  Stop."
 
   robot.hear /coachwiggly/i, (msg) ->
