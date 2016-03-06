@@ -49,7 +49,7 @@ class quizMe
 		if @admins.length == 0 || msg.message.user.name in @admins
 			return true
 		else
-			msg.send "You can't do this bitch"
+			msg.send "You don't have permission to do this"
 			return false
 
 	save: -> 
@@ -74,11 +74,11 @@ class quizMe
 		x = 6
 		while (x >= 0)
 			ques = 0
-			if (x == 6 || x == 5)
+			if (x in [5,6])
 				ques = 0
-			else if (x <= 2 && x >= 4)
+			else if (x in [2,3,4])
 				ques = 1
-			else if (x == 1 || x == 0)
+			else if (x in [0,1])
 				ques = 2
 			takeQuiz = selectTaker()
 			while ((takeQuiz in @curCandidates) || !@storage.quizTakers[takeQuiz][ques])
@@ -133,9 +133,8 @@ class quizMe
 			if (@curQuestion == 0)
 				@storage.quizTakers[@curCandidates[0]][0] = false
 				@storage.quizTakers[@curCandidates[1]][0] = false
-			else if (@curQuestion <= 3 && @curQuestion >= 1)
+			else if (@curQuestion in [1,2,3])
 				@storage.quizTakers[@curCandidates[@curQuestion + 1]][1] = false
-				msg.send @curCandidates[@curQuestion + 1]
 			else if (@curQuestion == 4)
 				@storage.quizTakers[@curCandidates[5]][2] = false
 				@storage.quizTakers[@curCandidates[6]][2] = false
