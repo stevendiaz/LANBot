@@ -170,8 +170,13 @@ module.exports = (robot) ->
       msg.send "same"
 
     if Math.floor(Math.random() * 2000) == selector
-      now = new Date
-      hour = (now.getHours() - 1) % 12 # decremented because hubot is in eastern time zone
-      minute = now.getMinutes()
-
-      msg.send "it's " + hour + ":" + minute + " and OU still sucks"
+      now = new Date()
+      # decremented because hubot is in eastern time zone
+      now.setHours((now.getHours() - 1) % 24)
+      hours = now.getHours() % 12
+      if hours == 0
+        hours = 12
+      minutes = now.getMinutes()
+      if minutes < 10
+        minutes = "0" + minutes
+      msg.send "It's " + hours + ":" + minutes + " and OU still sucks"
