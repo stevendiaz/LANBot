@@ -134,6 +134,9 @@ module.exports = (robot) ->
 
   robot.hear /^\s*ou!?\s*$/i, (msg) ->
     msg.send "SUCKS"
+    
+  robot.hear /zaralouis/i, (msg) ->
+    msg.send ":rejected: :stop: :ultra_stop:"
 
   robot.hear /^([^:]python[^:]|anaconda)/i, (msg) ->
     v = Math.floor(Math.random() * 100)
