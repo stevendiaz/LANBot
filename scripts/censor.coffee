@@ -1,3 +1,19 @@
+# Description:
+#   LANBot abuse prevention
+#
+# Dependencies:
+#   None
+#
+# Configuration:
+#   None
+#
+# Commands:
+#   lanbot mute - Mute LANBot for five minutes
+#   mute lanbot - Mute LANBot for five minutes
+#
+# Author:
+#   Lambda Alpha Nu
+
 class ResponsesManager
 
   constructor: ->
@@ -10,9 +26,12 @@ class ResponsesManager
     replies = [':disappointed:', ':cry:', ':rip:', ':pensive:', ':no_mouth:', ':fu:']
     msg.send msg.random replies
 
-    @muted.push msg.message.user.room
-
     that = this
+
+    setTimeout( ->
+      that.muted.push msg.message.user.room
+    , 100) # Give LANBot time to reply one last time
+
     setTimeout( ->
       that.unmute(msg)
     , 5 * 60 * 1000) # 5 minutes
