@@ -32,8 +32,8 @@ module.exports = (robot) ->
     msg.send "https://goo.gl/NahhsA"
 
   robot.hear /~admin/i, (msg) ->
-    replies = ['HELP', 'HAAAAALP', "HELP HELP WE'RE BEING REPRESSED", "INSTANT REGRET"]
-    msg.send "ARRDMIN " + msg.random replies
+    replies = ['HELP', 'HAAAAALP', "HELP HELP WE'RE BEING REPRESSED", "@channel"]
+    msg.send "DREW " + msg.random replies
 
   robot.hear /~help/i, (msg) ->
     msg.send "Bot features:\n" +
