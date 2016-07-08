@@ -80,9 +80,6 @@ module.exports = (robot) ->
   robot.hear /m'lan/i, (msg) ->
     msg.send "@erynzzz"
 
-  robot.hear /(not|barely|hardly) *a *(huge|big)? *fan/i, (msg) ->
-    msg.send "https://imgs.xkcd.com/comics/turbine.png"
-
   robot.hear /(tobbert|databae)/i, (msg) ->
     msg.send "@rmlynch"
 
@@ -112,7 +109,7 @@ module.exports = (robot) ->
 
   robot.hear  /aggie/i, (msg) ->
     msg.send "http://i.imgur.com/zsRHs3U.jpg"
-    
+
   robot.hear /\~cake/i, (msg) ->
     cake_replies = ["http://imgur.com/xpv1gZz", "http://imgur.com/blKDv1f", "http://imgur.com/BEqVbhZ", "http://imgur.com/b7D9Svx", "http://imgur.com/iFcbsoF", "http://imgur.com/NjDBhvE"]
     msg.send cake_replies[@count]
