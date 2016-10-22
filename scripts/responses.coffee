@@ -158,6 +158,9 @@ module.exports = (robot) ->
   robot.hear /rule (34|thirty four)$/i, (msg) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
+  robot.hear /@pledges/i, (msg) ->
+    msg.send "@benchen @ick @anthony @spence @colin19 @emilyn @hadi @kelly.luck @liam @lindseyyy @mehulgore @pcxie @rdongre @samantrodr @samg @sriram_ravula"
+
   robot.catchAll (msg) ->
     selector = 2
 
