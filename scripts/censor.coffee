@@ -58,9 +58,9 @@ module.exports = (robot) ->
 
   robot.responseMiddleware (context, next, done) ->
     # Mute @channels and the like
-    banned = ["@channel", "@here", "@group", "@everyone"]
+    banned = ['@channel', '@here', '@group', '@everyone']
     for b in banned
-        context.strings = (string.replace(b, "@." + b.substring(1)) for string in context.strings)
+        context.strings = (string.replace(b, '@.' + b.substring(1)) for string in context.strings)
 
     # Don't reply if muted
     if !responses.isMuted context.response.message
