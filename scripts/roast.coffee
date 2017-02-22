@@ -17,9 +17,10 @@
 
 module.exports = (robot) =>
     robot.hear /^roast @\w+/i, (msg) ->
-        roastee = escape(msg.match[1])
+        roaster = '@' + msg.message.user.name
+        roastee = msg.message.text.split(' ')[1]
         roasts = [
-            msg.user + " do you really not have anything better to do with your time",
+            roaster + " do you really not have anything better to do with your time",
             "leave " + roastee + " alone they've been through enough",
         ]
         roast = roasts[Math.floor(Math.random()*roasts.length)]
