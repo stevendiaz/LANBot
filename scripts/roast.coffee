@@ -17,7 +17,6 @@
 
 module.exports = (robot) =>
     robot.hear /^roast @\w+/i, (msg) ->
-        msg = Object(msg)
         roaster = '@' + msg.message.user.name
         roastee = msg.message.text.split(' ')[1]
         roasts = [
