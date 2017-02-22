@@ -56,12 +56,14 @@ module.exports = (robot) ->
     if !responses.isMuted msg.message
       responses.mute msg
 
-  isValid = (str) ->
-    return str.indexOf("@channel") == -1 &&
-      str.indexOf("@here") == -1 &&
-      str.indexOf("@group") == -1 &&
-      str.indexOf("@everyone") == -1
-
   robot.responseMiddleware (context, next, done) ->
-    return unless isValid(context.strings) && !responses.isMuted context.response.message
-    next()
+    # Mute @channels and the like
+    banned = ["@channel", "@here", "@group", "@everyone"]
+    for b in banned
+        context.strings = (string.replace(b, "@." + b.substring(1)) for string in context.strings)
+
+    # Don't reply if muted
+    if !responses.isMuted context.response.message
+        next()
+    else
+        done()
