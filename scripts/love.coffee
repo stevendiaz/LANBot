@@ -28,6 +28,8 @@ module.exports = (robot) =>
             "if " + lovee + " was a haircut I wouldn't wear a hat",
             lovee + " is KILLING it this semester! keep up the good work",
             "I never wished I had a sibling until I met " + lovee,
+            lovee + " thank you for your light :heart:",
+            lovee + ", you shine brighter than anyone I know",
+            lovee + " thank you for making this community better",
         ]
-        love = loves[Math.floor(Math.random()*loves.length)] + " :)\n" + lover.substr(1) + "++ for sending love"
-        msg.send love
+        msg.send (msg.random loves) + " :)"
