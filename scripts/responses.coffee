@@ -159,7 +159,7 @@ module.exports = (robot) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
   robot.hear /@pledges/i, (msg) ->
-    msg.send "@akashkw @alyssas @arti @atlanta @avery @btk5301 @carinahenry @chris @christian @dylan @gerardo @hailey @ian @jacob @joel @maddie @saket @scott @turner"
+    msg.send "@akashkw @alyssas @arti @atlanta @avery @brian @carinahenry @chris @christian @dylan @gerardo @hailey @ian @jacob @joel @maddie @saket @scott @turner"
 
   robot.catchAll (msg) ->
     selector = 2
