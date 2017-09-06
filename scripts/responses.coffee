@@ -17,7 +17,7 @@ module.exports = (robot) ->
   @count
 
   robot.hear /\~cal/i, (msg) ->
-    msg.send "http://goo.gl/lXHqbv"
+    msg.send "https://goo.gl/BD9zrU"
 
   robot.hear /\~bylaws/i, (msg) ->
     msg.send "https://github.com/TexasLAN/bylaws"
