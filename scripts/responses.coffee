@@ -159,7 +159,9 @@ module.exports = (robot) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
   robot.hear /@pledges/i, (msg) ->
-    msg.send "<@Alex> <@Bryson> <@Carter> <@Dylan R> <@Emily Rude> <@Grace> <@Hannah> <@John> <@jorbæ> <@Mark> <@Michael Zetune> <@nidhin> <@Peter> <@tarun> <@weston> <@Zach>"
+    msg.send "<@U7B9K764S> <@U7BDNJ7M3> <@U7B9K6DV0> <@U7CC4G27R> <@U7CC4GXBR> <@U7APS1M17> <@U7CC4G963> <@U7CC4JD9D> <@U7C680RFY> <@U7C680N14> <@U7B7Z01QB> <@U7BDNFP5K> <@U7B9K5QEN> <@U7B7C174K> <@U7BBMCTDJ> <@U7BDNN0QM>"
+    # https://api.slack.com/docs/message-formatting#linking_to_channels_and_users
+    # https://api.slack.com/changelog/2017-09-the-one-about-usernames
 
   robot.catchAll (msg) ->
     selector = 2
