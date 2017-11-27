@@ -95,7 +95,7 @@ module.exports = (robot) ->
   robot.hear /slackbot *is *dead/i, (msg) ->
     msg.send "Long live Slackbot"
 
-  robot.hear /^([^:]owo[^:]|owo)/i, (msg) ->
+  robot.hear /(:owo:|owo)/i, (msg) ->
     msg.send "whats this?"
 
   robot.hear /:crab:/, (msg) ->
