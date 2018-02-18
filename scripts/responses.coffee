@@ -165,9 +165,7 @@ module.exports = (robot) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
   robot.hear /@pledges/i, (msg) ->
-    msg.send  "@" + msg.message.user.name + ": " + # Declare the sender
-              msg.message.text + # Repeat the message for notifications
-              " <@U9A1YSU8Y>" + # Alex Stahl
+    msg.send  "<@U9A1YSU8Y>" + # Alex Stahl
               " <@U9AUKE7QV>" + # Antonio de Cesare
               " <@U9A7E17TK>" + # Avner Khan
               " <@U9ASGF1BM>" + # Deepthi Pittala
@@ -184,7 +182,7 @@ module.exports = (robot) ->
               " <@U9A856NG1>" + # Patrick Bell
               " <@U9AJ3JU1H>" + # Siwei Mao
               " <@U9ADE5U3T>" + # Sonali Kondapalli
-              " <@U9ATXS16Z>" # Vaishnav Gubba	
+              " <@U9ATXS16Z>"   # Vaishnav Gubba	
     # Tutorial:
     # 1) Navigate to https://www.texaslan.org/users/ and view Pledges (order alphabetically)
     # 2) Open the Slack desktop app, hamburger button (top right), Workspace Directory
