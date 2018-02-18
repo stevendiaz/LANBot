@@ -165,7 +165,33 @@ module.exports = (robot) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
   robot.hear /@pledges/i, (msg) ->
-    msg.send msg.message.text + " <@U7B9K764S> <@U7BDNJ7M3> <@U7B9K6DV0> <@U7CC4G27R> <@U7CC4GXBR> <@U7APS1M17> <@U7CC4G963> <@U7CC4JD9D> <@U7C680RFY> <@U7C680N14> <@U7B7Z01QB> <@U7BDNFP5K> <@U7B9K5QEN> <@U7B7C174K> <@U7BBMCTDJ>"
+    msg.send  "@" + msg.message.user.name + ": " + # Declare the sender
+              msg.message.text + # Repeat the message for notifications
+              " <@U9A1YSU8Y>" + # Alex Stahl
+              " <@U9AUKE7QV>" + # Antonio de Cesare
+              " <@U9A7E17TK>" + # Avner Khan
+              " <@U9ASGF1BM>" + # Deepthi Pittala
+              " <@U9AL76D8B>" + # Emily Arce
+              " <@U9C1Q3A4X>" + # Erica Guthan
+              " <@U9AN41JFN>" + # Henry Rossiter
+              " <@U9A6UC7QQ>" + # Holly Herman
+              " <@U9BGVJXJA>" + # Ira Gulati
+              " <@U9AM4ABB5>" + # Jackson Krauss
+              " <@U9BS46R1D>" + # Jamison Miles
+              " <@U9A4G0TPS>" + # Jerry Huang
+              " <@U9BNM6ZHV>" + # Katherine Donovan
+              " <@U9ALK0AP5>" + # Madhuri Mahendhravarman
+              " <@U9A856NG1>" + # Patrick Bell
+              " <@U9AJ3JU1H>" + # Siwei Mao
+              " <@U9ADE5U3T>" + # Sonali Kondapalli
+              " <@U9ATXS16Z>" # Vaishnav Gubba	
+    # Tutorial:
+    # 1) Navigate to https://www.texaslan.org/users/ and view Pledges (order alphabetically)
+    # 2) Open the Slack desktop app, hamburger button (top right), Workspace Directory
+    # 3) Search for each pledge alphabetically
+    #     a) Select their profile
+    #     b) Click the dropdown next to Call and Message
+    #     c) Copy member ID
     # https://api.slack.com/docs/message-formatting#linking_to_channels_and_users
     # https://api.slack.com/changelog/2017-09-the-one-about-usernames
 
