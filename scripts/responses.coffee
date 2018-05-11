@@ -165,11 +165,7 @@ module.exports = (robot) ->
     msg.send "34. If it is on the internet, there is porn of it"
 
   robot.hear /@pledges/i, (msg) ->
-    msg.send  " <@U9A7E17TK>" + # Avner Khan
-              " <@U9ASGF1BM>" + # Deepthi Pittala
-              " <@U9BS46R1D>" + # Jamison Miles
-              " <@U9A4G0TPS>" + # Jerry Huang
-              " <@U9A856NG1>"   # Patrick Bell
+    msg.send  "404 no pledges found"
     # Tutorial:
     # 1) Navigate to https://www.texaslan.org/users/ and view Pledges (order alphabetically)
     # 2) Open the Slack desktop app, hamburger button (top right), Workspace Directory
